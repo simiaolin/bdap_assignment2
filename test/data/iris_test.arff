@@ -1,0 +1,18 @@
+@RELATION iris-test
+
+@ATTRIBUTE sepallength NUMERIC
+@ATTRIBUTE sepalwidth NUMERIC
+@ATTRIBUTE petallength NUMERIC
+@ATTRIBUTE petalwidth NUMERIC
+@ATTRIBUTE class {Iris-setosa,Iris-versicolor,Iris-virginica}
+
+@DATA
+51,35,14,02,Iris-setosa
+49,30,14,02,Iris-setosa
+47,32,13,02,Iris-setosa
+70,32,47,14,Iris-versicolor
+64,32,45,15,Iris-versicolor
+69,31,49,15,Iris-versicolor
+63,33,60,25,Iris-virginica
+58,27,51,19,Iris-virginica
+79,38,64,20,Iris-virginica

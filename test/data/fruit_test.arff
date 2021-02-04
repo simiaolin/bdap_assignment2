@@ -1,0 +1,23 @@
+@RELATION fruit-test
+
+@ATTRIBUTE consistency {Hard,Medium,Soft}
+@ATTRIBUTE color {Green,Yellow,Red,Purple,Pink}
+@ATTRIBUTE diameter NUMERIC
+@ATTRIBUTE decision {Apple,Grape,Lemon,Lime,Eggplant,Beets,Pepper,Radish}
+
+@DATA
+Hard,Green,30,Apple
+Hard,Yellow,40,Apple
+Medium,Red,20,Grape
+Medium,Red,10,Grape
+Medium,Yellow,30,Lemon
+Hard,Green,23,Lime
+Medium,Red,40,Pepper
+Medium,Green,40,Pepper
+Medium,Green,60,Pepper
+Hard,Pink,10,Radish
+Medium,Yellow,10,Grape
+Medium,Red,40,Pepper
+Medium,Red,8,Grape
+Medium,Green,37,Apple
+Soft,Purple,49,Eggplant
