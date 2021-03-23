@@ -32,6 +32,10 @@ std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, i
 
 const ClassCounter classCounts(const Data &data);
 
+
+    double get_gini_with_data(const Data &data);
+
+    std::tuple<Data, std::vector<int>> sortNumeric(const Data &data, int col);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP

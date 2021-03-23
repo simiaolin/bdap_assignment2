@@ -68,9 +68,16 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric(const 
   std::string best_thresh;
 
   //TODO: find the best split value for a discrete ordinal feature
+    tuple<Data, std::vector<int>>  sorted_data_with_numeric_possible_values = sortNumeric(data, col);
+    for (int feature_value : std::get<1>(sorted_data_with_numeric_possible_values)) {
+
+    }
   return forward_as_tuple(best_thresh, best_loss);
 }
 
+tuple<Data, std::vector<int>> Calculations::sortNumeric(const Data& data, int col) {
+
+}
 
 tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data& data, int col,  const MetaData &meta) {
   double best_loss = std::numeric_limits<float>::infinity();
@@ -79,22 +86,25 @@ tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data
   //todo: if there are two value, no need to calculate both of them.
   for (std::string featureValue : std::get<1>(meta.featureMap.at(col))) {
       Question q(col, featureValue);
-      Data true_data = std::get<0>(partition(data, q));
-      Data false_data = std::get<1>(partition(data, q));
-      double size_of_true_data = true_data.size();
-      double size_of_false_data = false_data.size();
+      tuple<Data, Data> true_false_data = partition(data, q);
+      Data true_data = std::get<0>(true_false_data);
+      Data false_data = std::get<1>(true_false_data);
       double size_of_overall = data.size();
-      ClassCounter trueCounter = classCounts(true_data);
-      ClassCounter falseCounter = classCounts(false_data);
-      double true_gini = gini(trueCounter, size_of_true_data);
-      double false_gini = gini(falseCounter, size_of_false_data);
-      current_gini = (true_gini * size_of_true_data + false_gini * size_of_false_data ) / size_of_overall;
+      current_gini = (get_gini_with_data(true_data) + get_gini_with_data(false_data) ) / size_of_overall;
+
       if (current_gini < best_loss) {
           best_loss = current_gini;
           best_thresh = featureValue;
       }
   }
   return forward_as_tuple(best_thresh, best_loss);
+}
+
+double Calculations::get_gini_with_data(const Data& data) {
+    double data_size = data.size();
+    ClassCounter classCounter = classCounts(data);
+    double gini_value = gini(classCounter, data_size);
+    return gini_value * data_size;
 }
 
 
