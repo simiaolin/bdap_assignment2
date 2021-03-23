@@ -37,18 +37,18 @@ tuple<const double, const Question> Calculations::find_best_split(const Data& ro
   auto best_question = Question();  //keep track of the feature / value that produced it
   std::string best_question_value;
   int best_column;
-  double current_loss;
+  double current_gain;
     for (int i = 0; i < meta.labels.size() - 1; i++) {
       //todo: check the real feature
       tuple<std::string, double> thres_and_loss = (std::get<0>(meta.featureMap.at(i)) > 0)?
               determine_best_threshold_numeric(rows, i, meta) : determine_best_threshold_cat(rows, i, meta);
 
-      current_loss = std::get<1>(thres_and_loss);
+        current_gain = 1 - std::get<1>(thres_and_loss);
       //todo: check the > < =
-      if (current_loss < best_gain) {
+      if (current_gain > best_gain) {
           best_question_value = std::get<0> (thres_and_loss);
           best_column = i;
-          best_gain = current_loss;
+          best_gain = current_gain;
       }
   }
   best_question = Question(best_column, best_question_value);
@@ -70,6 +70,7 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric(const 
   //TODO: find the best split value for a discrete ordinal feature
   return forward_as_tuple(best_thresh, best_loss);
 }
+
 
 tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data& data, int col,  const MetaData &meta) {
   double best_loss = std::numeric_limits<float>::infinity();

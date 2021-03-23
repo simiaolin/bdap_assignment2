@@ -12,6 +12,16 @@ using std::string;
 using boost::timer::cpu_timer;
 using std::tuple;
 
+template <typename T>
+typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type
+IsAlmostEqual(T x, T y, int ulp = 2)
+{
+    // the machine epsilon has to be scaled to the magnitude of the values used
+    // and multiplied by the desired precision in ULPs (units in the last place)
+    return std::fabs(x - y) < std::numeric_limits<T>::epsilon() * std::fabs(x + y) * ulp
+           // unless the result is subnormal
+           || std::fabs(x - y) < std::numeric_limits<T>::min();
+}
 
 DecisionTree::DecisionTree(const DataReader& dr) : root_(Node()), dr_(dr) {
   std::cout << "Start building tree." << std::endl; cpu_timer timer;
@@ -30,7 +40,8 @@ const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
   tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
   double gain = std::get<0>(gain_question);
   Question question = std::get<1> (gain_question);
-  if (gain == 0) {
+  //todo: assign and test in if condition
+  if (IsAlmostEqual(gain, 1.0) && Calculations::classCounts(rows).size() ) {
       ClassCounter classCounter = Calculations::classCounts(rows);
       Leaf leaf(classCounter);
       Node leafNode(leaf);
