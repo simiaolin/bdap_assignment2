@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <iterator>
 #include "Calculations.hpp"
+#include "Question.hpp"
 #include "Utils.hpp"
 
 using std::tuple;
@@ -34,7 +35,25 @@ tuple<const Data, const Data> Calculations::partition(const Data& data, const Qu
 tuple<const double, const Question> Calculations::find_best_split(const Data& rows, const MetaData& meta) {
   double best_gain = 0.0;  // keep track of the best information gain
   auto best_question = Question();  //keep track of the feature / value that produced it
+  std::string best_question_value;
+  int best_column;
+
+  double current_gain;
   //TODO: find the best split among all features and feature values
+  std::vector<std::string> firstElement = rows.front();
+  for (int i = 0; i < meta.labels.size() - 1; i++) {
+      tuple<std::string, double> thres_and_loss = (best_question.isNumeric(firstElement.at(i)))?
+              determine_best_threshold_numeric(rows, i, meta) : determine_best_threshold_cat(rows, i, meta);
+
+      double loss = std::get<1>(thres_and_loss);
+      //todo: check the > < =
+      if (loss < best_gain) {
+          best_question_value = std::get<0> (thres_and_loss);
+          best_column = i;
+          best_gain = loss;
+      }
+  }
+  best_question = Question(best_column, best_question_value);
   return forward_as_tuple(best_gain, best_question);
 }
 
@@ -45,7 +64,7 @@ const double Calculations::gini(const ClassCounter& counts, double N) {
   return impurity;
 }
 
-tuple<std::string, double> Calculations::determine_best_threshold_numeric(const Data& data, int col) {
+tuple<std::string, double> Calculations::determine_best_threshold_numeric(const Data& data, int col,  const MetaData &meta) {
   double best_loss = std::numeric_limits<float>::infinity();
   std::string best_thresh;
 
@@ -53,11 +72,13 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric(const 
   return forward_as_tuple(best_thresh, best_loss);
 }
 
-tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data& data, int col) {
+tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data& data, int col,  const MetaData &meta) {
   double best_loss = std::numeric_limits<float>::infinity();
   std::string best_thresh;
 
   //TODO: find the best split value for a categorical feature
+  //TODO: BETTER ONE LOOP IS ENOUGH
+
   return forward_as_tuple(best_thresh, best_loss);
 }
 

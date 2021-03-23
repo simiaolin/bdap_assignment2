@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 project(Test)
 
 set(CMAKE_CXX_STANDARD 17)
+#set(CMAKE_CXX_FLAGS “${CMAKE_CXX_FLAGS} -stdlib=libstdc++”)
+set(CMAKE_BUILD_TYPE Debug)
 
 # find_package(DecisionTree 0.1 REQUIRED)
 # if(DecisionTree_FOUND)
@@ -43,3 +45,5 @@ add_executable(BaggingTest bagging_tester.cpp ${FILES})
 target_compile_options(BaggingTest PRIVATE -Wall -Weffc++ -Wpedantic)
 target_include_directories(BaggingTest PUBLIC ../lib/include ${Boost_INCLUDE_DIRS})
 target_link_libraries(BaggingTest Threads::Threads ${Boost_LIBRARIES})
+
+add_executable(MyMainTest mytest.cpp)

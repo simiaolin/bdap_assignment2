@@ -10,6 +10,8 @@ using std::make_shared;
 using std::shared_ptr;
 using std::string;
 using boost::timer::cpu_timer;
+using std::tuple;
+
 
 DecisionTree::DecisionTree(const DataReader& dr) : root_(Node()), dr_(dr) {
   std::cout << "Start building tree." << std::endl; cpu_timer timer;
@@ -26,6 +28,23 @@ const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
   //   ELSE
   //      Split the dataset among two branches and build the two subtrees
   //   END
+  tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
+  double gain = std::get<0>(gain_question);
+  Question question = std::get<1> (gain_question);
+  if (gain == 0) {
+      ClassCounter classCounter = Calculations::classCounts(rows);
+      Leaf leaf(classCounter);
+      Node leafNode(leaf);
+      return leafNode;
+  } else {
+      tuple<const Data, const Data> true_and_false_data = Calculations::partition(rows, question);
+      Data trueData = std::get<0>(true_and_false_data);
+      Data falseData = std::get<1>(true_and_false_data);
+      // In case there is empty branch
+      Node trueBranch = (trueData.size() > 0) ? buildTree(trueData, meta): Node();
+      Node falseBranch = (falseData.size() > 0) ? buildTree(falseData, meta): Node();
+      return Node(trueBranch, falseBranch, question);
+  }
 }
 
 void DecisionTree::print() const {

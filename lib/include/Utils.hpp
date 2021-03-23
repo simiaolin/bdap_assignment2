@@ -21,9 +21,14 @@
 // You can change these data type aliases
 using VecS = std::vector<std::string>;
 using Data = std::vector<std::vector<std::string>>;
+using FeatureMap = std::unordered_map<std::string, std::vector<std::string>>;
+
 struct MetaData {
   VecS labels;
+
   // Here you can store additional meta data
+  FeatureMap  featureMap;   //key: featureName, value: possible values of the feature
+
 };
 
 
