@@ -37,20 +37,18 @@ tuple<const double, const Question> Calculations::find_best_split(const Data& ro
   auto best_question = Question();  //keep track of the feature / value that produced it
   std::string best_question_value;
   int best_column;
-
-  double current_gain;
-  //TODO: find the best split among all features and feature values
-  std::vector<std::string> firstElement = rows.front();
-  for (int i = 0; i < meta.labels.size() - 1; i++) {
-      tuple<std::string, double> thres_and_loss = (best_question.isNumeric(firstElement.at(i)))?
+  double current_loss;
+    for (int i = 0; i < meta.labels.size() - 1; i++) {
+      //todo: check the real feature
+      tuple<std::string, double> thres_and_loss = (std::get<0>(meta.featureMap.at(i)) > 0)?
               determine_best_threshold_numeric(rows, i, meta) : determine_best_threshold_cat(rows, i, meta);
 
-      double loss = std::get<1>(thres_and_loss);
+      current_loss = std::get<1>(thres_and_loss);
       //todo: check the > < =
-      if (loss < best_gain) {
+      if (current_loss < best_gain) {
           best_question_value = std::get<0> (thres_and_loss);
           best_column = i;
-          best_gain = loss;
+          best_gain = current_loss;
       }
   }
   best_question = Question(best_column, best_question_value);
@@ -59,8 +57,9 @@ tuple<const double, const Question> Calculations::find_best_split(const Data& ro
 
 const double Calculations::gini(const ClassCounter& counts, double N) {
   double impurity = 1.0;
-
-  //TODO: compute gini index, given class counts and the dataset size
+  for (auto const& element : counts) {
+      impurity -= std::pow(element.second  / N, 2);
+  }
   return impurity;
 }
 
@@ -75,10 +74,25 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric(const 
 tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data& data, int col,  const MetaData &meta) {
   double best_loss = std::numeric_limits<float>::infinity();
   std::string best_thresh;
-
-  //TODO: find the best split value for a categorical feature
-  //TODO: BETTER ONE LOOP IS ENOUGH
-
+  double current_gini;
+  //todo: if there are two value, no need to calculate both of them.
+  for (std::string featureValue : std::get<1>(meta.featureMap.at(col))) {
+      Question q(col, featureValue);
+      Data true_data = std::get<0>(partition(data, q));
+      Data false_data = std::get<1>(partition(data, q));
+      double size_of_true_data = true_data.size();
+      double size_of_false_data = false_data.size();
+      double size_of_overall = data.size();
+      ClassCounter trueCounter = classCounts(true_data);
+      ClassCounter falseCounter = classCounts(false_data);
+      double true_gini = gini(trueCounter, size_of_true_data);
+      double false_gini = gini(falseCounter, size_of_false_data);
+      current_gini = (true_gini * size_of_true_data + false_gini * size_of_false_data ) / size_of_overall;
+      if (current_gini < best_loss) {
+          best_loss = current_gini;
+          best_thresh = featureValue;
+      }
+  }
   return forward_as_tuple(best_thresh, best_loss);
 }
 

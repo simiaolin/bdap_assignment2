@@ -21,7 +21,6 @@ DecisionTree::DecisionTree(const DataReader& dr) : root_(Node()), dr_(dr) {
 
 
 const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
-  //TODO: build a decision tree
   //   [gain, question] = find_best_split(..)
   //   IF gain == 0 DO
   //      Create a leaf node
