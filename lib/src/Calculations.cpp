@@ -68,13 +68,13 @@ const double Calculations::gini(const ClassCounter &counts, double N) {
 
 tuple<std::string, double> Calculations::determine_best_threshold_numeric(const Data &data, int col) {
     sortNumeric(data, col);
-    int current_feature_value = std::stod(data.front().at(0));
+    string current_feature_value = data.front().at(0);
     int begin_index =0;
     int end_index = 0;
     ClassCounterVec single;
     ClassCounterWithSize sum;
     for (std::vector<std::string> row : data) {
-        if (std::stod(row.at(col)) == current_feature_value) {
+        if (row.at(col) == current_feature_value) {
             end_index++;
         } else {
             //keep track of the classcounter and size of current feature value.
@@ -82,7 +82,7 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric(const 
             //reset begin_index and current_feature_value
             begin_index = end_index;
             end_index++;
-            current_feature_value = std::stod(row.at(col));
+            current_feature_value = row.at(col);
         }
     }
     add_to_class_counter_vecs(data, begin_index, end_index, single, sum, current_feature_value);
@@ -90,31 +90,35 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric(const 
 }
 
 tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data &data, int col, const MetaData &meta) {
-
-    double best_loss = std::numeric_limits<float>::infinity();
-    std::string best_thresh;
-    double current_gini;
-    //todo: if there are two value, no need to calculate both of them.
-    for (std::string featureValue : std::get<1>(meta.featureMap.at(col))) {
-        Question q(col, featureValue);
-        tuple<Data, Data> true_false_data = partition(data, q);
-        Data true_data = std::get<0>(true_false_data);
-        Data false_data = std::get<1>(true_false_data);
-        double size_of_overall = data.size();
-        current_gini = (get_gini_with_data(true_data) + get_gini_with_data(false_data)) / double(size_of_overall);
-
-        if (current_gini < best_loss) {
-            best_loss = current_gini;
-            best_thresh = featureValue;
-        }
-    }
-    return forward_as_tuple(best_thresh, best_loss);
+    return determine_best_threshold_numeric(data, col);
 }
+
+//tuple<std::string, double> Calculations::determine_best_threshold_cat(const Data &data, int col, const MetaData &meta) {
+//
+//    double best_loss = std::numeric_limits<float>::infinity();
+//    std::string best_thresh;
+//    double current_gini;
+//    //todo: if there are two value, no need to calculate both of them.
+//    for (std::string featureValue : std::get<1>(meta.featureMap.at(col))) {
+//        Question q(col, featureValue);
+//        tuple<Data, Data> true_false_data = partition(data, q);
+//        Data true_data = std::get<0>(true_false_data);
+//        Data false_data = std::get<1>(true_false_data);
+//        double size_of_overall = data.size();
+//        current_gini = (get_gini_with_data(true_data) + get_gini_with_data(false_data)) / double(size_of_overall);
+//
+//        if (current_gini < best_loss) {
+//            best_loss = current_gini;
+//            best_thresh = featureValue;
+//        }
+//    }
+//    return forward_as_tuple(best_thresh, best_loss);
+//}
 
 void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
                                              ClassCounterVec &single,
                                              ClassCounterWithSize &sum,
-                                             int current_feature_value) {
+                                             string current_feature_value) {
     ClassCounterWithSize classCounter;
 
     for (int i = begin_index; i < end_index; i++) {
@@ -122,7 +126,7 @@ void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, 
         add_to_class_counter(classCounter, decision);
         add_to_class_counter(sum, decision);
     }
-    single.push_back(forward_as_tuple(std::to_string(current_feature_value), classCounter));
+    single.push_back(forward_as_tuple(current_feature_value, classCounter));
 //    add_to_sum_counter_vec(single, sum);
 }
 

@@ -41,7 +41,7 @@ const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
   double gain = std::get<0>(gain_question);
   Question question = std::get<1> (gain_question);
   //todo: assign and test in if condition
-  if (IsAlmostEqual(gain, 1.0) && Calculations::classCounts(rows).size() ) {
+  if (IsAlmostEqual(gain, 1.0) && Calculations::classCounts(rows).size() == 1 ) {
       ClassCounter classCounter = Calculations::classCounts(rows);
       Leaf leaf(classCounter);
       Node leafNode(leaf);

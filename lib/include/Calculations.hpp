@@ -47,7 +47,7 @@ const ClassCounter classCounts(const Data &data);
 
     void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
                                    ClassCounterVec& single,
-                                   ClassCounterWithSize &sum, int current_feature_value);
+                                   ClassCounterWithSize &sum, std::string current_feature_value);
 
 
     void add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const std::string &decision);

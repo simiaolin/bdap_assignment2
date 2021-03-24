@@ -8,8 +8,8 @@
 
 int main() {
   Dataset d;
-  d.train.filename = "/Users/ary/CLionProjects/bdap_2/test/data/iris_test.arff";
-  d.test.filename = "/Users/ary/CLionProjects/bdap_2/test/data/iris_test.arff";
+  d.train.filename = "/Users/ary/CLionProjects/bdap_2/test/data/tennis.arff";
+  d.test.filename = "/Users/ary/CLionProjects/bdap_2/test/data/tennis_test.arff";
 
   DataReader dr(d);
   DecisionTree dt(dr);
