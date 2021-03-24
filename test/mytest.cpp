@@ -4,7 +4,15 @@
 
 #include "mytest.h"
 #include <iostream>
+#include <vector>
 
+
+using std::vector;
+using std::cout;
+using std::endl;
+using Row = std::vector<std::string>;
+using Data = std::vector<Row>;
+using namespace std::placeholders;
 
 // 函数定义
 void swap(int& x, int& y)
@@ -26,9 +34,46 @@ void swap2(int* x, int* y)
 
     return;
 }
+bool sorter(Row row1, Row row2, int col) {
+    return row1.at(col) < row2.at(col);
+}
+void testSortConstData() {
+    Row r1{"weak", "2", "yes"};
+    Row r2{"strong", "4", "no"};
+    Row r3{"strong", "3", "yes"};
+    Row r4{"acute", "1", "yes"};
+    const Data data {r1, r3, r2, r4};
+    Data* temp = (Data*) &data;
+    sort(temp->begin(), temp->end(), std::bind(sorter, _1, _2, 0));
+    for (auto v : data) {
+        for (std::string s : v) {
+            std::cout<<s<< " ";
+        }
+        std::cout<< "\n";
+    }
 
 
-int main ()
+
+}
+void testSortConstVector() {
+    const std::vector<int> v = {5,4,3,2,1};
+    std::vector<int>*temp=(std::vector<int>*)&v;
+    sort(temp->begin(),temp->end());
+    for(int a:v)
+        cout<<a<<" ";
+    cout<<endl;
+}
+
+int main() {
+    std::string a = "A";
+    std::string b = "A";
+
+    bool c = a==b;
+
+        return 0;
+}
+
+int testSwap ()
 {
     // 局部变量声明
     int a = 100;
