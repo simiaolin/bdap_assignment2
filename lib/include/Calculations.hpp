@@ -28,7 +28,7 @@ const double gini(const ClassCounter& counts, double N);
 
 std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
 
-std::tuple<std::string, double> determine_best_threshold_numeric(const Data &data, int col);
+std::tuple<std::string, double> determine_best_threshold(const Data &data, int col, bool isNumeric);
 
 std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col,  const MetaData &meta);
 
@@ -45,9 +45,8 @@ const ClassCounter classCounts(const Data &data);
                                                      const ClassCounterWithSize &sum);
 
 
-    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                   ClassCounterVec& single,
-                                   ClassCounterWithSize &sum, std::string current_feature_value);
+    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index, ClassCounterVec &single,
+                                   ClassCounterWithSize &sum, std::string current_feature_value, bool isNumeric);
 
 
     void add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const std::string &decision);

@@ -31,12 +31,6 @@ DecisionTree::DecisionTree(const DataReader& dr) : root_(Node()), dr_(dr) {
 
 
 const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
-  //   [gain, question] = find_best_split(..)
-  //   IF gain == 0 DO
-  //      Create a leaf node
-  //   ELSE
-  //      Split the dataset among two branches and build the two subtrees
-  //   END
   tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
   double gain = std::get<0>(gain_question);
   Question question = std::get<1> (gain_question);

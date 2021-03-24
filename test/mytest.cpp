@@ -35,7 +35,7 @@ void swap2(int* x, int* y)
     return;
 }
 bool sorter(Row row1, Row row2, int col) {
-    return row1.at(col) < row2.at(col);
+    return row1.at(col) > row2.at(col);
 }
 void testSortConstData() {
     Row r1{"weak", "2", "yes"};
