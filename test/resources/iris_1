@@ -1,0 +1,41 @@
+/Users/ary/CLionProjects/bdap_2/cmake-build-debug/test/DecisionTreeTest
+Start reading data set.
+Done.  0.002501s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Start building tree.
+Done.  0.027664s wall, 0.030000s user + 0.000000s system = 0.030000s CPU (108.4%)
+
+Is petallength >= 30?
+--> True:
+   Is petalwidth >= 18?
+   --> True:
+      Is petallength >= 49?
+      --> True:
+         Predict: { Iris-virginica: 43 }
+      --> False:
+         Is sepallength >= 60?
+         --> True:
+            Predict: { Iris-virginica: 2 }
+         --> False:
+            Predict: { Iris-versicolor: 1 }
+   --> False:
+      Is petallength >= 50?
+      --> True:
+         Is petalwidth >= 16?
+         --> True:
+            Is sepallength >= 72?
+            --> True:
+               Predict: { Iris-virginica: 1 }
+            --> False:
+               Predict: { Iris-versicolor: 2 }
+         --> False:
+            Predict: { Iris-virginica: 3 }
+      --> False:
+         Is petalwidth >= 17?
+         --> True:
+            Predict: { Iris-virginica: 1 }
+         --> False:
+            Predict: { Iris-versicolor: 47 }
+--> False:
+   Predict: { Iris-setosa: 50 }
+Total accuracy: 1

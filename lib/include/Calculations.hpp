@@ -38,7 +38,7 @@ const ClassCounter classCounts(const Data &data);
 
     double get_gini_with_data(const Data &data);
 
-    void sortNumeric(const Data &data, int col);
+    void sort_data(const Data &data, int col);
 
     std::tuple<std::string, double>
     const get_best_threshold_from_class_counter_vecs(const ClassCounterVec& single,
