@@ -70,7 +70,7 @@ int main() {
 
     bool c = a==b;
 
-        return 0;
+    return 0;
 }
 
 int testSwap ()
