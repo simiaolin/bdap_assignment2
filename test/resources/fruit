@@ -1,0 +1,75 @@
+/Users/ary/CLionProjects/bdap_2/cmake-build-debug/test/DecisionTreeTest
+Start reading data set.
+Done.  0.001193s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Start building tree.
+Done.  0.012589s wall, 0.010000s user + 0.000000s system = 0.010000s CPU (79.4%)
+
+Is diameter >= 23?
+--> True:
+   Is diameter >= 37?
+   --> True:
+      Is color  == Purple?
+      --> True:
+         Predict: { Eggplant: 6 }
+      --> False:
+         Is consistency  == Medium?
+         --> True:
+            Predict: { Pepper: 11 }
+         --> False:
+            Predict: { Apple: 2 }
+   --> False:
+      Is consistency  == Medium?
+      --> True:
+         Is color  == Yellow?
+         --> True:
+            Is diameter >= 29?
+            --> True:
+               Is diameter >= 30?
+               --> True:
+                  Is diameter >= 35?
+                  --> True:
+                     Predict: { Lemon: 3 }
+                  --> False:
+                     Predict: { Lemon: 4 Apple: 1 }
+               --> False:
+                  Predict: { Lemon: 4 }
+            --> False:
+               Predict: { Apple: 1 }
+         --> False:
+            Predict: { Apple: 2 }
+      --> False:
+         Is diameter >= 27?
+         --> True:
+            Is diameter >= 36?
+            --> True:
+               Predict: { Lime: 1 }
+            --> False:
+               Is diameter >= 30?
+               --> True:
+                  Predict: { Apple: 8 }
+               --> False:
+                  Is diameter >= 29?
+                  --> True:
+                     Predict: { Lime: 2 }
+                  --> False:
+                     Predict: { Apple: 2 }
+         --> False:
+            Predict: { Lime: 4 }
+--> False:
+   Is consistency  == Medium?
+   --> True:
+      Predict: { Grape: 14 }
+   --> False:
+      Is color  == Purple?
+      --> True:
+         Predict: { Beets: 5 }
+      --> False:
+         Is color  == Pink?
+         --> True:
+            Predict: { Radish: 5 }
+         --> False:
+            Predict: { Apple: 1 }
+Total accuracy: 0.933333
+
+Process finished with exit code 0

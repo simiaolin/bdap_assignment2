@@ -45,7 +45,7 @@ tuple<const double, const Question> Calculations::find_best_split(const Data &ro
         tuple<std::string, double> thres_and_loss =
                 determine_best_threshold(rows, col, std::get<0>(meta.featureMap.at(col)) > 0);
 
-        current_gain = 1 - std::get<1>(thres_and_loss);
+        current_gain = std::get<1>(thres_and_loss);
         if (current_gain > best_gain) {
             best_question_value = std::get<0>(thres_and_loss);
             best_column = col;
@@ -151,14 +151,17 @@ const tuple<std::string, double> Calculations::get_best_threshold_from_class_cou
         const int false_size = std::get<0>(false_class_counter_with_size);
         const double true_gini = gini(std::get<1>(true_class_counter_with_size), true_size);
         const double false_gini = gini(std::get<1>(false_class_counter_with_size), false_size);
-        current_gini = (true_gini * true_size + false_gini * false_size) / (double)overall_size;
+        current_gini =  (true_gini * true_size + false_gini * false_size) / (double)overall_size;
 
         if (current_gini < best_loss) {
             best_loss = current_gini;
             best_thresh = feature_value;
+            if (IsAlmostEqual(best_loss, 0.0))
+                break;
         }
     }
-    return forward_as_tuple(best_thresh, best_loss);
+    const double overall_gini = gini(std::get<1>(sum), std::get<0>(sum));
+    return forward_as_tuple(best_thresh,  overall_gini -  best_loss);
 }
 
 
@@ -176,14 +179,6 @@ const ClassCounterWithSize Calculations::get_false_class_counter(
     }
     int false_size = std::get<0>(sum) - std::get<0>(trueClassCounterWithSize);
     return forward_as_tuple(false_size, false_class_counter);
-}
-
-
-double Calculations::get_gini_with_data(const Data &data) {
-    double data_size = data.size();
-    ClassCounter classCounter = classCounts(data);
-    double gini_value = gini(classCounter, data_size);
-    return gini_value * data_size;
 }
 
 

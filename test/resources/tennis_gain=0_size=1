@@ -1,0 +1,35 @@
+/Users/ary/CLionProjects/bdap_2/cmake-build-debug/test/DecisionTreeTest
+Start reading data set.
+Done.  0.000424s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Start building tree.
+Done.  0.002484s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Is outlook  == Overcast?
+--> True:
+   Predict: { Yes: 4 }
+--> False:
+   Is humidity  == Normal?
+   --> True:
+      Is wind  == Weak?
+      --> True:
+         Predict: { Yes: 3 }
+      --> False:
+         Is temperature  == Mild?
+         --> True:
+            Predict: { Yes: 1 }
+         --> False:
+            Predict: { No: 1 }
+   --> False:
+      Is outlook  == Sunny?
+      --> True:
+         Predict: { No: 3 }
+      --> False:
+         Is wind  == Weak?
+         --> True:
+            Predict: { Yes: 1 }
+         --> False:
+            Predict: { No: 1 }
+Total accuracy: 1
+
+Process finished with exit code 0

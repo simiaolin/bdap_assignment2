@@ -22,26 +22,21 @@ using ClassCounterVec = std::vector<ClassCounterWithFeatureValue>;
 
 namespace Calculations {
 
-std::tuple<const Data, const Data> partition(const Data &data, const Question &q);
+    std::tuple<const Data, const Data> partition(const Data &data, const Question &q);
 
-const double gini(const ClassCounter& counts, double N);
+    const double gini(const ClassCounter &counts, double N);
 
-std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
+    std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
 
-std::tuple<std::string, double> determine_best_threshold(const Data &data, int col, bool isNumeric);
+    std::tuple<std::string, double> determine_best_threshold(const Data &data, int col, bool isNumeric);
 
-std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col,  const MetaData &meta);
+    const ClassCounter classCounts(const Data &data);
 
-
-const ClassCounter classCounts(const Data &data);
-
-
-    double get_gini_with_data(const Data &data);
 
     void sort_data(const Data &data, int col);
 
     std::tuple<std::string, double>
-    const get_best_threshold_from_class_counter_vecs(const ClassCounterVec& single,
+    const get_best_threshold_from_class_counter_vecs(const ClassCounterVec &single,
                                                      const ClassCounterWithSize &sum);
 
 
@@ -51,7 +46,8 @@ const ClassCounter classCounts(const Data &data);
 
     void add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const std::string &decision);
 
-    const ClassCounterWithSize get_false_class_counter(const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum);
+    const ClassCounterWithSize
+    get_false_class_counter(const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum);
 
     bool row_sorter(std::vector<std::string> row1, std::vector<std::string> row2, int col);
 } // namespace Calculations
