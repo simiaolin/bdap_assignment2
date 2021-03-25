@@ -34,14 +34,21 @@ tuple<const Data, const Data> Calculations::partition(const Data &data, const Qu
     return forward_as_tuple(true_rows, false_rows);
 }
 
+/**
+ * Given data, to find the best split.
+ * @param rows the data
+ * @param meta the feature information
+ * @return a tuple of best gain and best question
+ */
 tuple<const double, const Question> Calculations::find_best_split(const Data &rows, const MetaData &meta) {
     double best_gain = 0.0;  // keep track of the best information gain
     auto best_question = Question();  //keep track of the feature / value that produced it
     std::string best_question_value;
     int best_column;
     double current_gain;
+
+    //iterate through all the features, and find their best split, correspondingly.
     for (int col = 0; col < meta.labels.size() - 1; col++) {
-        //here I do not take into account the real value
         tuple<std::string, double> thres_and_loss =
                 determine_best_threshold(rows, col, std::get<0>(meta.featureMap.at(col)) > 0);
 
@@ -64,21 +71,29 @@ const double Calculations::gini(const ClassCounter &counts, double N) {
     return impurity;
 }
 
-//todo: two values make it simpler
+/**
+ * Given data and a specific feature, to determine the threshold that generates the best gain.
+ * Before all, to sort the data based on given column, no matter the corresponding feature values are numeric or category.
+ * Later iterate through the sorted data,
+ *      record the ClassCounter and the size for each feature value, as well as the ClassCounter and size of all data.
+ * Finally, to get the best threshold based on its corresponding ClassCounter, and the overall ClassCounter.
+ * @param data  the data
+ * @param col   the column index of the feature
+ * @param isNumeric  whether the feature values are NUMERIC or CATEGORY. Here I do not take into account the REAL type.
+ * @return    a tuple of best threshold and best gain, correspondingly.
+ */
 tuple<std::string, double> Calculations::determine_best_threshold(const Data &data, int col, bool isNumeric) {
     sort_data(data, col);
     int begin_index =0;
     int end_index = 0;
     string current_feature_value = data.front().at(0);
-    ClassCounterVec single;
-    ClassCounterWithSize sum;
+    ClassCounterVec single;      //record the ClassCounter and the size for each feature value
+    ClassCounterWithSize sum;    //record the ClassCounter and size for all data
     for (std::vector<std::string> row : data) {
         if (row.at(col) == current_feature_value) {
             end_index++;
         } else {
-            //keep track of the classcounter and size of current feature value.
             add_to_class_counter_vecs(data, begin_index, end_index, single, sum, current_feature_value, isNumeric);
-            //reset begin_index and current_feature_value
             begin_index = end_index;
             end_index++;
             current_feature_value = row.at(col);
@@ -92,26 +107,45 @@ tuple<std::string, double> Calculations::determine_best_threshold(const Data &da
 }
 
 
-
+/**
+ * Given a specific feature value, and its range in the sorted data,
+ * record the ClassCounter and the size for it, and update the ClassCounter and size of all data.
+ * @param data   the sorted data
+ * @param begin_index   begin index of sorted data having the specific feature value
+ * @param end_index     end index of sorted data having the specific feature value
+ * @param classCounterWithSizeVec        records the size and the class counter for each feature value.
+ *
+ *                      for the feature of type CATEGORY, each element in 「classCounterWithSizeVec」 keeps its size and class counter.
+ *                      for the feature of type NUMERIC, each element in 「classCounterWithSizeVec」 keeps the accumulated size and class counter.
+ *                      For instance, for CATEGORY feature value 「Yellow」, we partition via v == Yellow,
+ *                      so we only have to care about the size and the class counter for it.
+ *                      However, for NUMERIC feature value 「15」, actually we partition via v >= 15,
+ *                      so all the size and class counter for feature value greater than 15 should be accumulated.
+ * @param sum           records the size and the class counter for all data
+ * @param current_feature_value    the specific feature value
+ * @param isNumeric     whether the current specific feature value is numeric or not
+ */
 void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                             ClassCounterVec &single, ClassCounterWithSize &sum,
+                                             ClassCounterVec &classCounterWithSizeVec, ClassCounterWithSize &sum,
                                              std::string current_feature_value, bool isNumeric) {
-    ClassCounterWithSize classCounter;
-    if (isNumeric && single.size() > 0) {
-        //initialize as the accumulated class counter of feature value greater then current feature value.
-        //todo: check this.
-        classCounter = forward_as_tuple(std::get<0>(std::get<1>(single.back())), std::get<1>(std::get<1>(single.back())));
+    ClassCounterWithSize class_counter_with_size;
+    if (isNumeric && classCounterWithSizeVec.size() > 0) {
+        //for NUMERIC feature,
+        //initialize class_counter_with_size with the last accumulated class_counter_with_size in the vector 「classCounterWithSizeVec」.
+        class_counter_with_size = forward_as_tuple(
+                std::get<0>(std::get<1>(classCounterWithSizeVec.back())),
+                        std::get<1>(std::get<1>(classCounterWithSizeVec.back())));
     }
     for (int i = begin_index; i < end_index; i++) {
         const string decision = data.at(i).back();
-        add_to_class_counter(classCounter, decision);
+        add_to_class_counter(class_counter_with_size, decision);
         if (!isNumeric) {
-            //there is no need to calculated the sum class counter for numeric feature,
-            // because the last one is exactly the sum class counter.
+            //there is no need to calculate the sum for numeric feature,
+            // because the back of the vector 「classCounterWithSizeVec」is exactly the sum.
             add_to_class_counter(sum, decision);
         }
     }
-    single.push_back(forward_as_tuple(current_feature_value, classCounter));
+    classCounterWithSizeVec.push_back(forward_as_tuple(current_feature_value, class_counter_with_size));
 }
 
 void Calculations::add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const string &decision) {
@@ -129,20 +163,40 @@ bool Calculations::row_sorter(std::vector<string> row1, std::vector<string> row2
     return row1.at(col) > row2.at(col);
 }
 
+/**
+ * To sort data reversely given column index.
+ * For instance, to sort the data below on column 1,
+ *
+ * Green, 22, Apple
+ * Yellow, 34, Banana
+ * Purple, 25, Grape
+ *
+ * would lead to a result
+ * Yellow, 34, Banana
+ * Purple, 25, Grape
+ *  Green, 22, Apple
+ * @param data  data
+ * @param col  the column to sort on
+ */
 void Calculations::sort_data(const Data &data, int col) {
     Data *temp = (Data *) &data;
     sort(temp->begin(), temp->end(), std::bind(row_sorter, _1, _2, col));
 }
 
-
+/**
+ * To get the best threshold.
+ * @param classCounterWithSizeVec        records the size and the class counter for each feature value.
+ * @param sum                            records the size and the class counter for all data
+ * @return  the best threshold and the best gain
+ */
 const tuple<std::string, double> Calculations::get_best_threshold_from_class_counter_vecs(
-        const ClassCounterVec &single, const ClassCounterWithSize &sum) {
+        const ClassCounterVec &classCounterWithSizeVec, const ClassCounterWithSize &sum) {
     double best_loss = std::numeric_limits<float>::infinity();
     std::string best_thresh;
     int overall_size = std::get<0>(sum);
     double current_gini;
-    for (int index = 0; index < single.size(); index++) {
-        ClassCounterWithFeatureValue true_feature_value_and_class_counter = single.at(index);
+    for (int index = 0; index < classCounterWithSizeVec.size(); index++) {
+        ClassCounterWithFeatureValue true_feature_value_and_class_counter = classCounterWithSizeVec.at(index);
         const string feature_value = std::get<0>(true_feature_value_and_class_counter);
         const ClassCounterWithSize true_class_counter_with_size = std::get<1>(true_feature_value_and_class_counter);
         const ClassCounterWithSize false_class_counter_with_size = get_false_class_counter(true_class_counter_with_size,
@@ -164,7 +218,12 @@ const tuple<std::string, double> Calculations::get_best_threshold_from_class_cou
     return forward_as_tuple(best_thresh,  overall_gini -  best_loss);
 }
 
-
+/**
+ * To get false class counter with size.
+ * @param trueClassCounterWithSize   records the size and the class counter for true data
+ * @param sum                        records the size and the class counter for overall data
+ * @return the size and the class counter for false data
+ */
 const ClassCounterWithSize Calculations::get_false_class_counter(
         const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum) {
     ClassCounter false_class_counter;
@@ -194,28 +253,3 @@ const ClassCounter Calculations::classCounts(const Data &data) {
     }
     return counter;
 }
-
-//deprecated
-//void Calculations::add_to_sum_counter_vec(const ClassCounterVec& single,
-//                                          ClassCounterVec& sum) {
-//    assert(single.size() == sum.size() + 1);
-//    const tuple<std::string, ClassCounter> last_of_single = single.back();
-//    const string feature_value = std::get<0>(last_of_single);
-//    const ClassCounter last_class_counter_of_single = std::get<1>(last_of_single);
-//    const ClassCounter last_class_counter_of_sum = std::get<1>(sum.back());
-//    ClassCounter new_class_counter;
-//    for (auto counter = last_class_counter_of_single.begin(); counter != last_class_counter_of_single.end(); counter++) {
-//        new_class_counter[counter->first] = counter->second;
-//    }
-//
-//    for (auto counter = last_class_counter_of_sum.begin(); counter != last_class_counter_of_sum.end(); counter++) {
-//        if (new_class_counter.find(counter->first) != std::end(new_class_counter)) {
-//            new_class_counter.at(counter-> first) += counter->second;
-//        } else{
-//            new_class_counter[counter->first] = counter->second;
-//        }
-//    }
-//
-//    sum.push_back(forward_as_tuple(feature_value, new_class_counter));
-//
-//}

@@ -16,8 +16,8 @@
 #include "Utils.hpp"
 
 using ClassCounter = std::unordered_map<std::string, int>;
-using ClassCounterWithSize = std::tuple<int, ClassCounter>;
-using ClassCounterWithFeatureValue = std::tuple<std::string, ClassCounterWithSize>;  // feature_value, overall_count, class_counter
+using ClassCounterWithSize = std::tuple<int, ClassCounter>;  // <size, class_counter>
+using ClassCounterWithFeatureValue = std::tuple<std::string, ClassCounterWithSize>;  // <feature_value, class_counter_with_size>
 using ClassCounterVec = std::vector<ClassCounterWithFeatureValue>;
 
 namespace Calculations {
@@ -36,11 +36,11 @@ namespace Calculations {
     void sort_data(const Data &data, int col);
 
     std::tuple<std::string, double>
-    const get_best_threshold_from_class_counter_vecs(const ClassCounterVec &single,
+    const get_best_threshold_from_class_counter_vecs(const ClassCounterVec &classCounterWithSizeVec,
                                                      const ClassCounterWithSize &sum);
 
 
-    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index, ClassCounterVec &single,
+    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index, ClassCounterVec &classCounterWithSizeVec,
                                    ClassCounterWithSize &sum, std::string current_feature_value, bool isNumeric);
 
 

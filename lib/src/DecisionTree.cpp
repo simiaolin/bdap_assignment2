@@ -24,10 +24,7 @@ const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
   tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
   double gain = std::get<0>(gain_question);
   Question question = std::get<1> (gain_question);
-  //todo: assign and test in if condition
-  if (IsAlmostEqual(gain, 0.0)
-//  && Calculations::classCounts(rows).size() == 1
-  ) {
+  if (IsAlmostEqual(gain, 0.0)) {
       ClassCounter classCounter = Calculations::classCounts(rows);
       Leaf leaf(classCounter);
       Node leafNode(leaf);
