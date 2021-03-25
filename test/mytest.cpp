@@ -12,7 +12,7 @@ using std::cout;
 using std::endl;
 using Row = std::vector<std::string>;
 using Data = std::vector<Row>;
-using namespace std::placeholders;
+//using namespace std::placeholders;
 
 // 函数定义
 void swap(int& x, int& y)
@@ -44,7 +44,7 @@ void testSortConstData() {
     Row r4{"acute", "1", "yes"};
     const Data data {r1, r3, r2, r4};
     Data* temp = (Data*) &data;
-    sort(temp->begin(), temp->end(), std::bind(sorter, _1, _2, 0));
+//    sort(temp->begin(), temp->end(), std::bind(sorter, _1, _2, 0));
     for (auto v : data) {
         for (std::string s : v) {
             std::cout<<s<< " ";

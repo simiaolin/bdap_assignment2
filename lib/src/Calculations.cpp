@@ -17,7 +17,7 @@ using std::forward_as_tuple;
 using std::vector;
 using std::string;
 using std::unordered_map;
-using namespace std::placeholders;
+//using namespace std::placeholders;
 
 
 tuple<const Data, const Data> Calculations::partition(const Data &data, const Question &q) {
@@ -158,10 +158,18 @@ void Calculations::add_to_class_counter(ClassCounterWithSize &classCounterWithSi
     std::get<0>(classCounterWithSize)++;
 }
 
+struct RowComparator {
+    explicit RowComparator(int col_): col(col_) {}
 
-bool Calculations::row_sorter(std::vector<string> row1, std::vector<string> row2, int col) {
-    return row1.at(col) > row2.at(col);
-}
+    bool operator ()(std::vector<string> row1, std::vector<string> row2) const {
+        return row1.at(col) > row2.at(col);
+    }
+    int col;
+};
+
+//bool Calculations::row_sorter(std::vector<string> row1, std::vector<string> row2, int col) {
+//    return row1.at(col) > row2.at(col);
+//}
 
 /**
  * To sort data reversely given column index.
@@ -180,7 +188,7 @@ bool Calculations::row_sorter(std::vector<string> row1, std::vector<string> row2
  */
 void Calculations::sort_data(const Data &data, int col) {
     Data *temp = (Data *) &data;
-    sort(temp->begin(), temp->end(), std::bind(row_sorter, _1, _2, col));
+    sort(temp->begin(), temp->end(), RowComparator(col));
 }
 
 /**
