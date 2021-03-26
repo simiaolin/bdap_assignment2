@@ -17,8 +17,11 @@
 
 using ClassCounter = std::unordered_map<std::string, int>;
 using ClassCounterWithSize = std::tuple<int, ClassCounter>;  // <size, class_counter>
-using ClassCounterWithFeatureValue = std::tuple<std::string, ClassCounterWithSize>;  // <feature_value, class_counter_with_size>
-using ClassCounterVec = std::vector<ClassCounterWithFeatureValue>;
+
+using CategoryClassCounterMap = std::unordered_map<std::string, ClassCounterWithSize>;  // map <feature_value, class_counter_with_size>
+
+using ClassCounterWithFeatureValue = std::tuple<std::string, ClassCounterWithSize>;
+using NumericClassCounterVec = std::vector<ClassCounterWithFeatureValue>;     //vector <feature_value, class_counter_with_size>
 
 namespace Calculations {
 
@@ -29,20 +32,20 @@ namespace Calculations {
     std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
 
     std::tuple<std::string, double>
-    determine_best_threshold(const Data &data, int col, bool isNumeric, ClassCounterWithSize &sum);
+    determine_best_threshold_numeric(const Data &data, int col, ClassCounterWithSize &sum);
 
     const ClassCounter classCounts(const Data &data);
 
 
-    void sort_data(const Data &data, int col);
+    const Data & sort_data(const Data &data, int col);
 
     std::tuple<std::string, double>
-    const get_best_threshold_from_class_counter_vecs(const ClassCounterVec &classCounterWithSizeVec,
-                                                     const ClassCounterWithSize &sum);
+    const get_best_threshold_from_numeric_class_counter_vecs(const NumericClassCounterVec &classCounterWithSizeVec,
+                                                             ClassCounterWithSize &sum);
 
 
     void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                   ClassCounterVec &classCounterWithSizeVec,
+                                   NumericClassCounterVec &classCounterWithSizeVec,
                                    ClassCounterWithSize &sum, std::string current_feature_value, bool isNumeric,
                                    int col);
 
@@ -53,6 +56,15 @@ namespace Calculations {
     get_false_class_counter(const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum);
 
     bool row_sorter(std::vector<std::string> row1, std::vector<std::string> row2, int col);
+
+    std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col, ClassCounterWithSize &sum);
+
+    bool get_best_loss(const std::string &feature_value, const ClassCounterWithSize &true_class_counter_with_size,
+                       const ClassCounterWithSize &sum, int overall_size, double &best_loss, std::string &best_thresh);
+
+    const std::tuple<std::string, double>
+    get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
+                                                        ClassCounterWithSize &sum);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
