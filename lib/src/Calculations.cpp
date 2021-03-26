@@ -88,7 +88,7 @@ Calculations::determine_best_threshold(const Data &data, int col, bool isNumeric
     sort_data(data, col);
     int begin_index =0;
     int end_index = 0;
-    string current_feature_value = data.front().at(0);
+    string current_feature_value = data.front().at(col);
     ClassCounterVec single;      //record the ClassCounter and the size for each feature value
     for (std::vector<std::string> row : data) {
         if (row.at(col) == current_feature_value) {
