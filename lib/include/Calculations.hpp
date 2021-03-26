@@ -28,7 +28,8 @@ namespace Calculations {
 
     std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
 
-    std::tuple<std::string, double> determine_best_threshold(const Data &data, int col, bool isNumeric);
+    std::tuple<std::string, double>
+    determine_best_threshold(const Data &data, int col, bool isNumeric, ClassCounterWithSize &sum);
 
     const ClassCounter classCounts(const Data &data);
 
@@ -40,8 +41,10 @@ namespace Calculations {
                                                      const ClassCounterWithSize &sum);
 
 
-    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index, ClassCounterVec &classCounterWithSizeVec,
-                                   ClassCounterWithSize &sum, std::string current_feature_value, bool isNumeric);
+    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
+                                   ClassCounterVec &classCounterWithSizeVec,
+                                   ClassCounterWithSize &sum, std::string current_feature_value, bool isNumeric,
+                                   int col);
 
 
     void add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const std::string &decision);

@@ -46,11 +46,12 @@ tuple<const double, const Question> Calculations::find_best_split(const Data &ro
     std::string best_question_value;
     int best_column;
     double current_gain;
+    ClassCounterWithSize sum;    //record the ClassCounter and size for all data
 
     //iterate through all the features, and find their best split, correspondingly.
     for (int col = 0; col < meta.labels.size() - 1; col++) {
         tuple<std::string, double> thres_and_loss =
-                determine_best_threshold(rows, col, meta.labelTypes.at(col) > 0);
+                determine_best_threshold(rows, col, meta.labelTypes.at(col) > 0, sum);
 
         current_gain = std::get<1>(thres_and_loss);
         if (current_gain > best_gain) {
@@ -82,24 +83,24 @@ const double Calculations::gini(const ClassCounter &counts, double N) {
  * @param isNumeric  whether the feature values are NUMERIC or CATEGORY. Here I do not take into account the REAL type.
  * @return    a tuple of best threshold and best gain, correspondingly.
  */
-tuple<std::string, double> Calculations::determine_best_threshold(const Data &data, int col, bool isNumeric) {
+tuple<std::string, double>
+Calculations::determine_best_threshold(const Data &data, int col, bool isNumeric, ClassCounterWithSize &sum) {
     sort_data(data, col);
     int begin_index =0;
     int end_index = 0;
     string current_feature_value = data.front().at(0);
     ClassCounterVec single;      //record the ClassCounter and the size for each feature value
-    ClassCounterWithSize sum;    //record the ClassCounter and size for all data
     for (std::vector<std::string> row : data) {
         if (row.at(col) == current_feature_value) {
             end_index++;
         } else {
-            add_to_class_counter_vecs(data, begin_index, end_index, single, sum, current_feature_value, isNumeric);
+            add_to_class_counter_vecs(data, begin_index, end_index, single, sum, current_feature_value, isNumeric, col);
             begin_index = end_index;
             end_index++;
             current_feature_value = row.at(col);
         }
     }
-    add_to_class_counter_vecs(data, begin_index, end_index, single, sum, current_feature_value, isNumeric);
+    add_to_class_counter_vecs(data, begin_index, end_index, single, sum, current_feature_value, isNumeric, col);
     if (isNumeric) {
         sum = std::get<1>(single.back());
     }
@@ -124,10 +125,12 @@ tuple<std::string, double> Calculations::determine_best_threshold(const Data &da
  * @param sum           records the size and the class counter for all data
  * @param current_feature_value    the specific feature value
  * @param isNumeric     whether the current specific feature value is numeric or not
+ * @param col           the column index of the feature
  */
 void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                             ClassCounterVec &classCounterWithSizeVec, ClassCounterWithSize &sum,
-                                             std::string current_feature_value, bool isNumeric) {
+                                             ClassCounterVec &classCounterWithSizeVec,
+                                             ClassCounterWithSize &sum, std::string current_feature_value,
+                                             bool isNumeric, int col) {
     ClassCounterWithSize class_counter_with_size;
     if (isNumeric && classCounterWithSizeVec.size() > 0) {
         //for NUMERIC feature,
@@ -139,9 +142,12 @@ void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, 
     for (int i = begin_index; i < end_index; i++) {
         const string decision = data.at(i).back();
         add_to_class_counter(class_counter_with_size, decision);
-        if (!isNumeric) {
+        if (!isNumeric && col ==0) {
             //there is no need to calculate the sum for numeric feature,
             // because the back of the vector 「classCounterWithSizeVec」is exactly the sum.
+
+            // as the overall class counter for all columns are the same,
+            // we only have to calculate it once at the column 0.
             add_to_class_counter(sum, decision);
         }
     }
