@@ -91,19 +91,19 @@ Calculations::determine_best_threshold_numeric(const Data &data, int col, ClassC
     Data sortData = sort_data(data, col);
     int begin_index =0;
     int end_index = 0;
-    string current_feature_value = sortData.front().at(0);
+    string current_feature_value = sortData.front().at(col);
     NumericClassCounterVec single;      //record the ClassCounter and the size for each feature value
     for (std::vector<std::string> row : sortData) {
-        if (row.at(0) == current_feature_value) {
+        if (row.at(col) == current_feature_value) {
             end_index++;
         } else {
-            add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value, true, col);
+            add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
             begin_index = end_index;
             end_index++;
-            current_feature_value = row.at(0);
+            current_feature_value = row.at(col);
         }
     }
-    add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value, true, col);
+    add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
     sum = std::get<1>(single.back());
     return get_best_threshold_from_numeric_class_counter_vecs(single, sum);
 }
@@ -142,11 +142,10 @@ tuple<std::string, double>
  * @param col           the column index of the feature
  */
 void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                             NumericClassCounterVec &classCounterWithSizeVec,
-                                             ClassCounterWithSize &sum, std::string current_feature_value,
-                                             bool isNumeric, int col) {
+                                             NumericClassCounterVec &classCounterWithSizeVec, ClassCounterWithSize &sum,
+                                             std::string current_feature_value) {
     ClassCounterWithSize class_counter_with_size;
-    if (isNumeric && classCounterWithSizeVec.size() > 0) {
+    if (classCounterWithSizeVec.size() > 0) {
         //for NUMERIC feature,
         //initialize class_counter_with_size with the last accumulated class_counter_with_size in the vector 「classCounterWithSizeVec」.
         class_counter_with_size = forward_as_tuple(
@@ -199,11 +198,9 @@ struct RowComparator {
  * @param col  the column to sort on
  */
 const Data & Calculations::sort_data(const Data &data, int col) {
-    //todo:
     Data *temp = (Data *) &data;
     sort(temp->begin(), temp->end(), RowComparator(col));
-    Data ndata;
-    return ndata;
+    return data;
 }
 
 /**

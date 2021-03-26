@@ -45,9 +45,8 @@ namespace Calculations {
 
 
     void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                   NumericClassCounterVec &classCounterWithSizeVec,
-                                   ClassCounterWithSize &sum, std::string current_feature_value, bool isNumeric,
-                                   int col);
+                                   NumericClassCounterVec &classCounterWithSizeVec, ClassCounterWithSize &sum,
+                                   std::string current_feature_value);
 
 
     void add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const std::string &decision);
