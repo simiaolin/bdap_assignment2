@@ -58,7 +58,7 @@ void testSortConstData() {
 void testSortConstVector() {
     const std::vector<int> v = {5,4,3,2,1};
     std::vector<int>*temp=(std::vector<int>*)&v;
-    sort(temp->begin(),temp->end());
+//    sort(temp->begin(),temp->end());
     for(int a:v)
         cout<<a<<" ";
     cout<<endl;

@@ -93,8 +93,7 @@ bool DataReader::parseHeaderLine(const std::string &line, MetaData &meta, bool &
         && strcasecmp(s.substr(s.size() - len, len).c_str(), " NUMERIC") == 0) {
       s = s.substr(0, s.size() - len);
       meta.labels.push_back(s);
-      VecS mockVector = {"a"};
-      meta.featureMap.push_back(forward_as_tuple(1, mockVector));
+      meta.labelTypes.push_back(1);
       return true;
     }
 
@@ -103,8 +102,7 @@ bool DataReader::parseHeaderLine(const std::string &line, MetaData &meta, bool &
         && strcasecmp(s.substr(s.size() - len, len).c_str(), " REAL") == 0) {
       s = s.substr(0, s.size() - len);
       meta.labels.push_back(s);
-      VecS mockVector = {"a"};
-      meta.featureMap.push_back(forward_as_tuple(2, mockVector));
+      meta.labelTypes.push_back(2);
       return true;
     }
 
@@ -114,9 +112,7 @@ bool DataReader::parseHeaderLine(const std::string &line, MetaData &meta, bool &
       int end_pos = s.find_first_of("}");
 
         VecS vec;
-        split(vec, s.substr(pos+1, end_pos - pos - 1), boost::is_any_of(","));
-        trimWhiteSpaces(vec);
-        meta.featureMap.push_back(forward_as_tuple(0, vec));
+        meta.labelTypes.push_back(0);
 
       return true;
     }
