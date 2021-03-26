@@ -16,12 +16,13 @@
 #include <unordered_map>
 #include <vector>
 #include <boost/timer/timer.hpp>
+#include <cmath>
 
 
 // You can change these data type aliases
 using VecS = std::vector<std::string>;
 using Data = std::vector<std::vector<std::string>>;
-using featureTypeAndValues = std::vector<std::tuple<int, VecS>>;
+using VecInt = std::vector<int>;
 
 template <typename T>
 typename std::enable_if<!std::numeric_limits<T>::is_integer, bool>::type
@@ -38,7 +39,7 @@ struct MetaData {
   VecS labels;
 
   // Here you can store additional meta data
-  featureTypeAndValues  featureMap;   //key: featureName, value: possible values of the feature
+  VecInt  labelTypes;   // type of label  0:string , 1:numeric, 2:real
 
 };
 

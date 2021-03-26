@@ -50,7 +50,7 @@ tuple<const double, const Question> Calculations::find_best_split(const Data &ro
     //iterate through all the features, and find their best split, correspondingly.
     for (int col = 0; col < meta.labels.size() - 1; col++) {
         tuple<std::string, double> thres_and_loss =
-                determine_best_threshold(rows, col, std::get<0>(meta.featureMap.at(col)) > 0);
+                determine_best_threshold(rows, col, meta.labelTypes.at(col) > 0);
 
         current_gain = std::get<1>(thres_and_loss);
         if (current_gain > best_gain) {
