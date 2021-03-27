@@ -84,23 +84,24 @@ const double Calculations::gini(const ClassCounter &counts, double N) {
  * Finally, to get the best threshold based on its corresponding ClassCounter, and the overall ClassCounter.
  * @param data  the data
  * @param col   the column index of the feature
+ * @param sum   the overall class counter with size
  * @return    a tuple of best threshold and best gain, correspondingly.
  */
 tuple<std::string, double>
 Calculations::determine_best_threshold_numeric(const Data &data, int col, ClassCounterWithSize &sum) {
-    Data sortData = sort_data(data, col);
+    Data sortData = sort_numeric_data(data, col);
     int begin_index =0;
     int end_index = 0;
-    string current_feature_value = sortData.front().at(col);
+    string current_feature_value = sortData.front().at(0);
     NumericClassCounterVec single;      //record the ClassCounter and the size for each feature value
     for (std::vector<std::string> row : sortData) {
-        if (row.at(col) == current_feature_value) {
+        if (row.at(0) == current_feature_value) {
             end_index++;
         } else {
             add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
             begin_index = end_index;
             end_index++;
-            current_feature_value = row.at(col);
+            current_feature_value = row.at(0);
         }
     }
     add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
@@ -197,12 +198,21 @@ struct RowComparator {
  * @param data  data
  * @param col  the column to sort on
  */
-const Data & Calculations::sort_data(const Data &data, int col) {
-    Data *temp = (Data *) &data;
-    sort(temp->begin(), temp->end(), RowComparator(col));
-    return data;
+const Data Calculations::sort_numeric_data(const Data &data, int col) {
+
+    Data sorted_data;
+    for (VecS row : data) {
+        const VecS new_row{row.at(col), row.back()};
+        sorted_data.emplace_back(std::move(new_row));
+    }
+    Data *temp = (Data *) &sorted_data;
+    sort(temp->begin(), temp->end(), sorter);
+    return sorted_data;
 }
 
+bool Calculations::sorter(VecS row1, VecS row2) {
+    return row1.front() > row2.front();
+}
 /**
  * To get the best threshold.
  * @param classCounterWithSizeVec        records the size and the class counter for each feature value.

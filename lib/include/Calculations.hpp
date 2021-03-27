@@ -37,7 +37,7 @@ namespace Calculations {
     const ClassCounter classCounts(const Data &data);
 
 
-    const Data & sort_data(const Data &data, int col);
+    const Data sort_numeric_data(const Data &data, int col);
 
     std::tuple<std::string, double>
     const get_best_threshold_from_numeric_class_counter_vecs(const NumericClassCounterVec &classCounterWithSizeVec,
@@ -64,6 +64,8 @@ namespace Calculations {
     const std::tuple<std::string, double>
     get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
                                                         ClassCounterWithSize &sum);
+
+    bool sorter(VecS row1, VecS row2);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
