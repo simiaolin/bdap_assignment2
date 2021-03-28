@@ -36,8 +36,8 @@ const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
       Data trueData = std::get<0>(true_and_false_data);
       Data falseData = std::get<1>(true_and_false_data);
       // In case there is empty branch
-      Node trueBranch = (trueData.size() > 0) ? buildTree(trueData, meta): Node();
-      Node falseBranch = (falseData.size() > 0) ? buildTree(falseData, meta): Node();
+      Node trueBranch = buildTree(trueData, meta);
+      Node falseBranch = buildTree(falseData, meta);
       return Node(trueBranch, falseBranch, question);
   }
 }

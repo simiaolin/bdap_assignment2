@@ -11,9 +11,15 @@ int main(int argc, char** argv) {
   Dataset d;
 
   std::string dataset_name = argv[1];
-  std::string path = "/Users/ary/CLionProjects/bdap_2/test/data/";
-  d.train.filename =  path + dataset_name + ".arff";
-  d.test.filename = path + dataset_name + "_test.arff";
+  if (dataset_name == "full") {
+      d.train.filename =  "/cw/bdap/assignment2/data/covtype.arff";
+      d.test.filename = "/cw/bdap/assignment2/data/covtype_test.arff";
+  } else{
+      std::string path = "/Users/ary/CLionProjects/bdap_2/test/data/";
+      d.train.filename =  path + dataset_name + ".arff";
+      d.test.filename = path + dataset_name + "_test.arff";
+  }
+
 
   DataReader dr(d);
   DecisionTree dt(dr);
