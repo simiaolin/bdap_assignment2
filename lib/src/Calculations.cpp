@@ -18,6 +18,8 @@ using std::vector;
 using std::string;
 using std::unordered_map;
 //using namespace std::placeholders;
+using boost::timer::cpu_timer;
+
 
 
 tuple<const Data, const Data> Calculations::partition(const Data &data, const Question &q) {
@@ -89,7 +91,10 @@ const double Calculations::gini(const ClassCounter &counts, double N) {
  */
 tuple<std::string, double>
 Calculations::determine_best_threshold_numeric(const Data &data, int col, ClassCounterWithSize &sum) {
+    cpu_timer cpuTimer;
     Data sortData = sort_numeric_data(data, col);
+    std::cout<<"------------numeric data with size " <<data.size() <<" begin-------------" << std::endl;
+    std::cout<<"sort " <<data.size() <<" use " << cpuTimer.format()<<std::endl;
     int begin_index =0;
     int end_index = 0;
     string current_feature_value = sortData.front().at(0);
@@ -105,8 +110,12 @@ Calculations::determine_best_threshold_numeric(const Data &data, int col, ClassC
         }
     }
     add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
+    std::cout<<"get the numeric class coutner use " <<cpuTimer.format() << std::endl;
     sum = std::get<1>(single.back());
-    return get_best_threshold_from_numeric_class_counter_vecs(single, sum);
+    std::tuple<std::string, double> res = get_best_threshold_from_numeric_class_counter_vecs(single, sum);
+    std::cout<<"get the threshold use " << cpuTimer.format() << std::endl;
+    std::cout<<"------------numeric data with size " <<data.size() <<" end-------------" <<std::endl<<std::endl;
+    return res;
 }
 
 tuple<std::string, double>
@@ -114,13 +123,21 @@ tuple<std::string, double>
     CategoryClassCounterMap single;      //record the ClassCounter and the size for each feature value
     string current_feature_value;
     string current_decision;
+    std::cout<<"-------------cat with data of size " << data.size() << " begin----------" << std::endl;
+    cpu_timer cpuTimer;
     for (std::vector<std::string> row : data) {
         current_feature_value = row.at(col);
         current_decision = row.back();
         add_to_class_counter(single[current_feature_value], current_decision);
         add_to_class_counter(sum, current_decision);
     }
-    return get_best_threshold_from_category_class_counter_vecs(single, sum);
+
+    std::cout<<"cat get class coutner use " <<  cpuTimer.format() <<std::endl;
+    std::tuple<std::string, double> res = get_best_threshold_from_category_class_counter_vecs(single, sum);
+    std::cout<<"cat get threshold use " <<cpuTimer.format() << std::endl;
+    std::cout<<"-------------cat with data of size " << data.size() << " end----------" << std::endl<<std::endl;
+
+    return res;
 }
 
 /**
@@ -211,7 +228,7 @@ const Data Calculations::sort_numeric_data(const Data &data, int col) {
 }
 
 bool Calculations::sorter(VecS row1, VecS row2) {
-    return row1.front() > row2.front();
+    return std::stoi(row1.front()) > std::stoi(row2.front());
 }
 /**
  * To get the best threshold.
@@ -224,32 +241,30 @@ const Calculations::get_best_threshold_from_numeric_class_counter_vecs(const Num
                                                                        ClassCounterWithSize &sum) {
     double best_loss = std::numeric_limits<float>::infinity();
     std::string best_thresh;
-    int overall_size = std::get<0>(sum);
     for (int index = 0; index < classCounterWithSizeVec.size(); index++) {
         ClassCounterWithFeatureValue true_feature_value_and_class_counter = classCounterWithSizeVec.at(index);
         const string feature_value = std::get<0>(true_feature_value_and_class_counter);
         const ClassCounterWithSize true_class_counter_with_size = std::get<1>(true_feature_value_and_class_counter);
-
-        bool has_get_best_loss = get_best_loss(feature_value, true_class_counter_with_size, sum, overall_size, best_loss, best_thresh);
+        bool has_get_best_loss = get_best_loss(feature_value, true_class_counter_with_size, sum, best_loss,
+                                               best_thresh);
         if (has_get_best_loss)
             break;
     }
     const double overall_gini = gini(std::get<1>(sum), std::get<0>(sum));
     return forward_as_tuple(best_thresh,  overall_gini -  best_loss);
 }
-
 
 std::tuple<std::string, double>
 const Calculations::get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
                                                                        ClassCounterWithSize &sum) {
     double best_loss = std::numeric_limits<float>::infinity();
     std::string best_thresh;
-    int overall_size = std::get<0>(sum);
     for (auto catClassCounter = categoryClassCounterMap.begin(); catClassCounter != categoryClassCounterMap.end(); catClassCounter++) {
         const string feature_value =  catClassCounter->first;
         const ClassCounterWithSize true_class_counter_with_size = catClassCounter->second;
 
-        bool has_get_best_loss = get_best_loss(feature_value, true_class_counter_with_size, sum, overall_size, best_loss, best_thresh);
+        bool has_get_best_loss = get_best_loss(feature_value, true_class_counter_with_size, sum, best_loss,
+                                               best_thresh);
         if (has_get_best_loss)
             break;
     }
@@ -257,10 +272,9 @@ const Calculations::get_best_threshold_from_category_class_counter_vecs(const Ca
     return forward_as_tuple(best_thresh,  overall_gini -  best_loss);
 }
 
-bool Calculations::get_best_loss(
-        const string& feature_value, const ClassCounterWithSize& true_class_counter_with_size,
-        const ClassCounterWithSize& sum, int overall_size,
-        double & best_loss, string& best_thresh) {
+bool
+Calculations::get_best_loss(const std::string &feature_value, const ClassCounterWithSize &true_class_counter_with_size,
+                            const ClassCounterWithSize &sum, double &best_loss, std::string &best_thresh) {
 
     const ClassCounterWithSize false_class_counter_with_size = get_false_class_counter(true_class_counter_with_size,
                                                                                        sum);
@@ -268,7 +282,7 @@ bool Calculations::get_best_loss(
     const int false_size = std::get<0>(false_class_counter_with_size);
     const double true_gini = gini(std::get<1>(true_class_counter_with_size), true_size);
     const double false_gini = gini(std::get<1>(false_class_counter_with_size), false_size);
-    const double current_gini =  (true_gini * true_size + false_gini * false_size) / (double) overall_size;
+    const double current_gini =  (true_gini * true_size + false_gini * false_size) / (double) std::get<0>(sum);
 
     if (current_gini < best_loss) {
         best_loss = current_gini;

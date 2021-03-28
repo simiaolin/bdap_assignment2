@@ -6,10 +6,14 @@
 
 #include "../lib/include/DecisionTree.hpp"
 
-int main() {
+
+int main(int argc, char** argv) {
   Dataset d;
-  d.train.filename = "/Users/ary/CLionProjects/bdap_2/test/data/iris.arff";
-  d.test.filename = "/Users/ary/CLionProjects/bdap_2/test/data/iris_test.arff";
+
+  std::string dataset_name = argv[1];
+  std::string path = "/Users/ary/CLionProjects/bdap_2/test/data/";
+  d.train.filename =  path + dataset_name + ".arff";
+  d.test.filename = path + dataset_name + "_test.arff";
 
   DataReader dr(d);
   DecisionTree dt(dr);

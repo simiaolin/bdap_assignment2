@@ -59,7 +59,7 @@ namespace Calculations {
     std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col, ClassCounterWithSize &sum);
 
     bool get_best_loss(const std::string &feature_value, const ClassCounterWithSize &true_class_counter_with_size,
-                       const ClassCounterWithSize &sum, int overall_size, double &best_loss, std::string &best_thresh);
+                       const ClassCounterWithSize &sum, double &best_loss, std::string &best_thresh);
 
     const std::tuple<std::string, double>
     get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
