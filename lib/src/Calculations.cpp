@@ -54,7 +54,7 @@ tuple<const double, const Question> Calculations::find_best_split(const Data &ro
         ClassCounterWithSize sum;    //record the ClassCounter and size for all data
         tuple<std::string, double> thres_and_loss =
                 (meta.labelTypes.at(col) > 0) ?
-                determine_best_threshold_numeric(rows, col, sum):
+                determine_best_threshold_numeric(rows, col) :
                 determine_best_threshold_cat(rows, col, sum);
 
 
@@ -90,7 +90,7 @@ const double Calculations::gini(const ClassCounter &counts, double N) {
  * @return    a tuple of best threshold and best gain, correspondingly.
  */
 tuple<std::string, double>
-Calculations::determine_best_threshold_numeric(const Data &data, int col, ClassCounterWithSize &sum) {
+Calculations::determine_best_threshold_numeric(const Data &data, int col) {
     cpu_timer cpuTimer;
     Data sortData = sort_numeric_data(data, col);
     std::cout<<"------------numeric data with size " <<data.size() <<" begin-------------" << std::endl;
@@ -98,22 +98,21 @@ Calculations::determine_best_threshold_numeric(const Data &data, int col, ClassC
     int begin_index =0;
     int end_index = 0;
     string current_feature_value = sortData.front().at(0);
-    NumericClassCounterVec single;      //record the ClassCounter and the size for each feature value
+    NumericClassCounterVec numericClassCounterVec;      //record the ClassCounter and the size for each feature value
     for (std::vector<std::string> row : sortData) {
         if (row.at(0) == current_feature_value) {
             end_index++;
         } else {
-            add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
+            add_to_class_counter_vec(sortData, begin_index, end_index, numericClassCounterVec, current_feature_value);
             begin_index = end_index;
             end_index++;
             current_feature_value = row.at(0);
         }
     }
-    add_to_class_counter_vecs(sortData, begin_index, end_index, single, sum, current_feature_value);
-    std::cout<<"get the numeric class coutner use " <<cpuTimer.format() << std::endl;
-    sum = std::get<1>(single.back());
-    std::tuple<std::string, double> res = get_best_threshold_from_numeric_class_counter_vecs(single, sum);
-    std::cout<<"get the threshold use " << cpuTimer.format() << std::endl;
+    add_to_class_counter_vec(sortData, begin_index, end_index, numericClassCounterVec, current_feature_value);
+//    std::cout<<"get the numeric class coutner use " <<cpuTimer.format() << std::endl;
+    std::tuple<std::string, double> res = get_best_threshold_from_numeric_class_counter_vec(numericClassCounterVec);
+//    std::cout<<"get the threshold use " << cpuTimer.format() << std::endl;
     std::cout<<"------------numeric data with size " <<data.size() <<" end-------------" <<std::endl<<std::endl;
     return res;
 }
@@ -132,7 +131,7 @@ tuple<std::string, double>
         add_to_class_counter(sum, current_decision);
     }
 
-    std::cout<<"cat get class coutner use " <<  cpuTimer.format() <<std::endl;
+//    std::cout<<"cat get class coutner use " <<  cpuTimer.format() <<std::endl;
     std::tuple<std::string, double> res = get_best_threshold_from_category_class_counter_vecs(single, sum);
     std::cout<<"cat get threshold use " <<cpuTimer.format() << std::endl;
     std::cout<<"-------------cat with data of size " << data.size() << " end----------" << std::endl<<std::endl;
@@ -159,9 +158,9 @@ tuple<std::string, double>
  * @param isNumeric     whether the current specific feature value is numeric or not
  * @param col           the column index of the feature
  */
-void Calculations::add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                             NumericClassCounterVec &classCounterWithSizeVec, ClassCounterWithSize &sum,
-                                             std::string current_feature_value) {
+void Calculations::add_to_class_counter_vec(const Data &data, int begin_index, int end_index,
+                                            NumericClassCounterVec &classCounterWithSizeVec,
+                                            const string &current_feature_value) {
     ClassCounterWithSize class_counter_with_size;
     if (classCounterWithSizeVec.size() > 0) {
         //for NUMERIC feature,
@@ -227,7 +226,7 @@ const Data Calculations::sort_numeric_data(const Data &data, int col) {
     return sorted_data;
 }
 
-bool Calculations::sorter(VecS row1, VecS row2) {
+bool Calculations::sorter(VecS &row1, VecS &row2) {
     return std::stoi(row1.front()) > std::stoi(row2.front());
 }
 /**
@@ -237,9 +236,10 @@ bool Calculations::sorter(VecS row1, VecS row2) {
  * @return  the best threshold and the best gain
  */
 std::tuple<std::string, double>
-const Calculations::get_best_threshold_from_numeric_class_counter_vecs(const NumericClassCounterVec &classCounterWithSizeVec,
-                                                                       ClassCounterWithSize &sum) {
+const Calculations::get_best_threshold_from_numeric_class_counter_vec(
+        const NumericClassCounterVec &classCounterWithSizeVec) {
     double best_loss = std::numeric_limits<float>::infinity();
+    ClassCounterWithSize sum = std::get<1>(classCounterWithSizeVec.back());
     std::string best_thresh;
     for (int index = 0; index < classCounterWithSizeVec.size(); index++) {
         ClassCounterWithFeatureValue true_feature_value_and_class_counter = classCounterWithSizeVec.at(index);

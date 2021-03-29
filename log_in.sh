@@ -12,3 +12,7 @@ ssh r0829520@balen.cs.kotnet.kuleuven.be
 cd /home/r0829520/assign2/bdap_2
 ./install.sh
 cd /home/r0829520/assign2/bdap_2/test/build
+
+ssh -L 8080:mysql.cs.kotnet.kuleuven.be:80 r0829520@st.cs.kuleuven.be
+
+

@@ -32,7 +32,7 @@ namespace Calculations {
     std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
 
     std::tuple<std::string, double>
-    determine_best_threshold_numeric(const Data &data, int col, ClassCounterWithSize &sum);
+    determine_best_threshold_numeric(const Data &data, int col);
 
     const ClassCounter classCounts(const Data &data);
 
@@ -40,21 +40,18 @@ namespace Calculations {
     const Data sort_numeric_data(const Data &data, int col);
 
     std::tuple<std::string, double>
-    const get_best_threshold_from_numeric_class_counter_vecs(const NumericClassCounterVec &classCounterWithSizeVec,
-                                                             ClassCounterWithSize &sum);
+    const get_best_threshold_from_numeric_class_counter_vec(const NumericClassCounterVec &classCounterWithSizeVec);
 
 
-    void add_to_class_counter_vecs(const Data &data, int begin_index, int end_index,
-                                   NumericClassCounterVec &classCounterWithSizeVec, ClassCounterWithSize &sum,
-                                   std::string current_feature_value);
+    void add_to_class_counter_vec(const Data &data, int begin_index, int end_index,
+                                  NumericClassCounterVec &classCounterWithSizeVec,
+                                  const std::string &current_feature_value);
 
 
     void add_to_class_counter(ClassCounterWithSize &classCounterWithSize, const std::string &decision);
 
     const ClassCounterWithSize
     get_false_class_counter(const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum);
-
-    bool row_sorter(std::vector<std::string> row1, std::vector<std::string> row2, int col);
 
     std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col, ClassCounterWithSize &sum);
 
@@ -65,7 +62,7 @@ namespace Calculations {
     get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
                                                         ClassCounterWithSize &sum);
 
-    bool sorter(VecS row1, VecS row2);
+    bool sorter(VecS &row1, VecS &row2);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
