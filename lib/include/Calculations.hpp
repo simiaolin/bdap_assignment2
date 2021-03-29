@@ -53,16 +53,18 @@ namespace Calculations {
     const ClassCounterWithSize
     get_false_class_counter(const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum);
 
-    std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col, ClassCounterWithSize &sum);
+    std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col);
 
     bool get_best_loss(const std::string &feature_value, const ClassCounterWithSize &true_class_counter_with_size,
                        const ClassCounterWithSize &sum, double &best_loss, std::string &best_thresh);
 
     const std::tuple<std::string, double>
     get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
-                                                        ClassCounterWithSize &sum);
+                                                        const ClassCounterWithSize &sum);
 
     bool sorter(VecS &row1, VecS &row2);
+
+    const ClassCounter get_overall_classcounter(const CategoryClassCounterMap &categoryClassCounterMap);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
