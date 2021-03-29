@@ -1,0 +1,63 @@
+Start building tree.
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.382761s wall, 1.360000s user + 0.020000s system = 1.380000s CPU (99.8%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.204324s wall, 1.200000s user + 0.010000s system = 1.210000s CPU (100.5%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.009127s wall, 1.010000s user + 0.000000s system = 1.010000s CPU (100.1%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.120531s wall, 1.120000s user + 0.000000s system = 1.120000s CPU (100.0%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.170219s wall, 1.170000s user + 0.010000s system = 1.180000s CPU (100.8%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.318020s wall, 1.320000s user + 0.000000s system = 1.320000s CPU (100.2%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.121996s wall, 1.120000s user + 0.000000s system = 1.120000s CPU (99.8%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.087450s wall, 1.080000s user + 0.000000s system = 1.080000s CPU (99.3%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.189550s wall, 1.190000s user + 0.000000s system = 1.190000s CPU (100.0%)
+
+------------numeric data with size 463859 end-------------
+
+------------numeric data with size 463859 begin-------------
+sort 463859 use  1.320913s wall, 1.320000s user + 0.000000s system = 1.320000s CPU (99.9%)
+
+------------numeric data with size 463859 end-------------
+
+-------------cat with data of size 463859 begin----------
+cat get threshold use  0.743840s wall, 0.740000s user + 0.000000s system = 0.740000s CPU (99.5%)
+
+-------------cat with data of size 463859 end----------
+
+-------------cat with data of size 463859 begin----------
+cat get threshold use  0.756441s wall, 0.760000s user + 0.000000s system = 0.760000s CPU (100.5%)
+
+-------------cat with data of size 463859 end----------
+
+split size 463859 using  1.178779s wall, 1.110000s user + 0.070000s system = 1.180000s CPU (100.1%)
+

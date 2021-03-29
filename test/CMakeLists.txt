@@ -10,8 +10,8 @@ set(CMAKE_BUILD_TYPE Debug)
 #     message("-- DecisionTree version: ${DecisionTree_VERSION}")
 # endif()
 
-#set(Boost_INCLUDE_DIR /Users/ary/Desktop/bdap/boost/boost_1_75_0/)
-#set(Boost_LIBRARIES /Users/ary/Desktop/bdap/boost/boost_1_75_0/stage/lib/)
+set(Boost_INCLUDE_DIR /Users/ary/Desktop/bdap/boost/boost_1_75_0/)
+set(Boost_LIBRARIES /Users/ary/Desktop/bdap/boost/boost_1_75_0/stage/lib/)
 
 
 #set(Boost_INCLUDE_DIRS /Users/ary/Desktop/bdap/boost/boost_1_75_0/)

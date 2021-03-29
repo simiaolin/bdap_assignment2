@@ -20,9 +20,12 @@ DecisionTree::DecisionTree(const DataReader& dr) : root_(Node()), dr_(dr) {
 }
 
 
-const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
+const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
+    cpu_timer cpuTimer1;
   tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
-  double gain = std::get<0>(gain_question);
+        std::cout<<"----find best split with size " <<rows.size() << " use " <<cpuTimer1.format() << "----"<< std::endl;
+
+    double gain = std::get<0>(gain_question);
   Question question = std::get<1> (gain_question);
   if (IsAlmostEqual(gain, 0.0)) {
       ClassCounter classCounter = Calculations::classCounts(rows);
@@ -30,9 +33,9 @@ const Node DecisionTree::buildTree(const Data& rows, const MetaData& meta) {
       Node leafNode(leaf);
       return leafNode;
   } else {
-      cpu_timer cpuTimer;
+//      cpu_timer cpuTimer;
       tuple<const Data, const Data> true_and_false_data = Calculations::partition(rows, question);
-      std::cout<<"split size " << rows.size() << " using " << cpuTimer.format() << std::endl;
+//      std::cout<<"split size " << rows.size() << " using " << cpuTimer.format() << std::endl;
       Data trueData = std::get<0>(true_and_false_data);
       Data falseData = std::get<1>(true_and_false_data);
       // In case there is empty branch

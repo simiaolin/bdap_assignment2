@@ -1,0 +1,12 @@
+
+-------------cat with data of size 463859 begin----------
+cat get threshold use  0.773945s wall, 0.770000s user + 0.000000s system = 0.770000s CPU (99.5%)
+
+-------------cat with data of size 463859 end----------
+
+-------------cat with data of size 463859 begin----------
+cat get threshold use  0.778863s wall, 0.780000s user + 0.000000s system = 0.780000s CPU (100.1%)
+
+-------------cat with data of size 463859 end----------
+
+split size 463859 using  1.188033s wall, 1.110000s user + 0.070000s system = 1.180000s CPU (99.3%)

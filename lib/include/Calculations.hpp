@@ -27,7 +27,7 @@ namespace Calculations {
 
     std::tuple<const Data, const Data> partition(const Data &data, const Question &q);
 
-    const double gini(const ClassCounter &counts, double N);
+    const double gini(const ClassCounter &counts, const double N);
 
     std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
 
