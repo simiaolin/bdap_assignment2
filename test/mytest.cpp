@@ -5,7 +5,8 @@
 #include "mytest.h"
 #include <iostream>
 #include <vector>
-
+#include <random>
+#include <ctime> // To seed the generator.
 
 using std::vector;
 using std::cout;
@@ -65,10 +66,36 @@ void testSortConstVector() {
 }
 
 int main() {
-    std::string a = "A";
-    std::string b = "A";
+    const unsigned int seed = time(0);
+    cout << "Seed = " << seed << endl; // cout is a way to print in C++, endl ends the line.
 
-    bool c = a==b;
+    // Generating random numbers with C++11's random requires an engine and a distribution.
+
+    // This is the engine based on the Mersenne Twister 19937 (64 bits):
+   std::mt19937 rng(1234);
+
+    // Creates a uniform distribution in the [0, 1) range (default):
+    std::uniform_real_distribution<> unif;
+
+    // To get a random number, you send the engine (rng) as argument to a distribution object:
+    for (int i = 0; i < 10; i++) {
+        cout << unif(rng) << ' ';
+    }
+    cout << endl;
+
+    // Creates a uniform integer distribution in the [6, 496) range:
+    std::uniform_int_distribution<int> unii(6, 496);
+    for (int i = 0; i < 10; i++) {
+        cout << unii(rng) << ' ';
+    }
+    cout << endl;
+
+    // Normal distribution with mean 5 and std 2:
+    std::normal_distribution<double> norm(5, 2);
+    for (int i = 0; i < 10; i++) {
+        cout << norm(rng) << ' ';
+    }
+    cout << endl;
 
     return 0;
 }

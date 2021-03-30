@@ -15,7 +15,7 @@ Bagging::Bagging(const DataReader& dr, const int ensembleSize, uint seed) :
   dr_(dr), 
   ensembleSize_(ensembleSize),
   learners_({}) {
-  random_number_generator.seed(seed);
+    random_number_generator.seed(seed);
   buildBag();
 }
 
@@ -25,6 +25,8 @@ void Bagging::buildBag() {
   std::vector<double> timings; 
   for (int i = 0; i < ensembleSize_; i++) {
     timer.start();
+     DecisionTree dt(dr_);
+     dt.test();
     //TODO: Implement bagging
     //   Generate a bootstrap sample of the original data
     //   Train an unpruned tree model on this sample
