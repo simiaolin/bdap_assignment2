@@ -7,3 +7,8 @@ Total accuracy: 0.935273
 Done.  476.645172s wall, 461.390000s user + 4.650000s system = 466.040000s CPU (97.8%)
 
 Total accuracy: 0.935102
+
+3. split true and false data [wl]
+Done.  363.990347s wall, 362.040000s user + 1.950000s system = 363.990000s CPU (100.0%)
+
+Total accuracy: 0.93494

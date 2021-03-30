@@ -34,13 +34,13 @@ const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
       return leafNode;
   } else {
 //      cpu_timer cpuTimer;
-      tuple<const Data, const Data> true_and_false_data = Calculations::partition(rows, question);
+       Data true_data;
+       Data false_data;
+      Calculations::partition(rows, question, true_data,false_data);
 //      std::cout<<"split size " << rows.size() << " using " << cpuTimer.format() << std::endl;
-      Data trueData = std::get<0>(true_and_false_data);
-      Data falseData = std::get<1>(true_and_false_data);
       // In case there is empty branch
-      Node trueBranch = buildTree(trueData, meta);
-      Node falseBranch = buildTree(falseData, meta);
+      Node trueBranch = buildTree(true_data, meta);
+      Node falseBranch = buildTree(false_data, meta);
       return Node(trueBranch, falseBranch, question);
   }
 }

@@ -22,18 +22,15 @@ using boost::timer::cpu_timer;
 
 
 
-tuple<const Data, const Data> Calculations::partition(const Data &data, const Question &q) {
-    Data true_rows;
-    Data false_rows;
-
+void
+Calculations::partition(const Data &data, const Question &q, Data &trueData, Data &falseData) {
     for (const auto &row: data) {
         if (q.solve(row))
-            true_rows.push_back(row);
+            trueData.emplace_back(std::move(row));
         else
-            false_rows.push_back(row);
+            falseData.push_back(std::move(row));
     }
 
-    return forward_as_tuple(true_rows, false_rows);
 }
 
 /**

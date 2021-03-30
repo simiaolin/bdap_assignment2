@@ -33,7 +33,7 @@ using NumericClassCounterVec = std::vector<ClassCounterWithFeatureValue>;     //
 
 namespace Calculations {
 
-    std::tuple<const Data, const Data> partition(const Data &data, const Question &q);
+    void partition(const Data &data, const Question &q, Data &trueData, Data &falseData);
 
     const double gini(const ClassCounter &counts, const double N);
 
