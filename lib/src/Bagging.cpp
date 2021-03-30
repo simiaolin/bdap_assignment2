@@ -25,7 +25,12 @@ void Bagging::buildBag() {
   std::vector<double> timings; 
   for (int i = 0; i < ensembleSize_; i++) {
     timer.start();
-     DecisionTree dt(dr_);
+      std::uniform_int_distribution<int> unii(0, dr_.trainData().size() - 1);
+      std::vector<size_t> samples;
+      for (int i = 0; i < dr_.trainData().size(); i++) {
+          samples.emplace_back(std::move(unii(random_number_generator)));
+      }
+      DecisionTree dt(dr_, samples);
      dt.test();
     //TODO: Implement bagging
     //   Generate a bootstrap sample of the original data
@@ -33,6 +38,7 @@ void Bagging::buildBag() {
     auto nanoseconds = boost::chrono::nanoseconds(timer.elapsed().wall);
     auto seconds = boost::chrono::duration_cast<boost::chrono::seconds>(nanoseconds);
     timings.push_back(seconds.count());
+      learners_.push_back(dt);
   }
   float avg_timing = Utils::iterators::average(std::begin(timings), std::begin(timings) + std::min(5, ensembleSize_));
   std::cout << "Average timing: " << avg_timing << std::endl;
@@ -53,7 +59,7 @@ void Bagging::test() const {
     if (prediction == row[last])
       accuracy += 1;
   }
-  std::cout << "Total accuracy: " << (accuracy / dr_.testData().size()) << std::endl;
+  std::cout << "Bagging Total accuracy: " << (accuracy / dr_.testData().size()) << std::endl;
 }
 
 

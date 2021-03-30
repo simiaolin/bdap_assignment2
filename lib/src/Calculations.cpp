@@ -21,6 +21,12 @@ using std::unordered_map;
 using boost::timer::cpu_timer;
 
 
+void Calculations::generateSampleData(const Data &rows, const std::vector<size_t> &samples, Data &sampleData) {
+    for (auto index : samples) {
+        sampleData.emplace_back(rows.at(index));
+    }
+}
+
 
 void
 Calculations::partition(const Data &data, const Question &q, Data &trueData, Data &falseData) {
@@ -82,9 +88,12 @@ tuple<std::string, double> Calculations::determine_best_threshold_numeric_new(co
     }
     ClassCounterWithSize overall = forward_as_tuple(data.size(), get_overall_classcounter_numeric(numericClassCounterMap));
 
-    std::tuple<std::string, double> res = get_best_threshold_from_numeric_class_counter_map(numericClassCounterMap,
-                                                                                            overall);
-    std::cout<<"------------numeric data with size " <<data.size() <<" use " << cpuTimer.format()<<" end-------------" <<std::endl<<std::endl;
+    std::tuple<std::string, double> res = get_best_threshold_from_numeric_class_counter_map(numericClassCounterMap, overall);
+    bool showNumericSpitting = false;
+    if (showNumericSpitting) {
+
+        std::cout<<"------------numeric data with size " <<data.size() <<" use " << cpuTimer.format()<<" end-------------" <<std::endl<<std::endl;
+    }
     return res;
 }
 

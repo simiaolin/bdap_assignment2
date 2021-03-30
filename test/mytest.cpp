@@ -65,14 +65,25 @@ void testSortConstVector() {
     cout<<endl;
 }
 
+int testConst(const int) {
+    return 1;
+}
+
+
 int main() {
+    int i =1;
+    testConst(i);
+    return 0;
+}
+
+void testRnadom() {
     const unsigned int seed = time(0);
     cout << "Seed = " << seed << endl; // cout is a way to print in C++, endl ends the line.
 
     // Generating random numbers with C++11's random requires an engine and a distribution.
 
     // This is the engine based on the Mersenne Twister 19937 (64 bits):
-   std::mt19937 rng(1234);
+    std::mt19937 rng(1234);
 
     // Creates a uniform distribution in the [0, 1) range (default):
     std::uniform_real_distribution<> unif;
@@ -96,10 +107,7 @@ int main() {
         cout << norm(rng) << ' ';
     }
     cout << endl;
-
-    return 0;
 }
-
 int testSwap ()
 {
     // 局部变量声明

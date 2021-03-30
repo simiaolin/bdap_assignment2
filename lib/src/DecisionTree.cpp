@@ -19,11 +19,22 @@ DecisionTree::DecisionTree(const DataReader& dr) : root_(Node()), dr_(dr) {
   std::cout << "Done. " << timer.format() << std::endl;
 }
 
+DecisionTree::DecisionTree(const DataReader& dr, const std::vector<size_t>& samples): root_(Node()), dr_(dr){
+    std::cout << "Start building tree in bagging." << std::endl; cpu_timer timer;
+
+    Data sample_data;
+    Calculations::generateSampleData(dr_.trainData(), samples, sample_data);
+    root_ = buildTree(sample_data, dr_.metaData());
+    std::cout << "Done with building tree in bagging. " << timer.format() << std::endl;
+}
 
 const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
+    bool showSplittingMsg = true;
     cpu_timer cpuTimer1;
   tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
+    if (showSplittingMsg) {
         std::cout<<"----find best split with size " <<rows.size() << " use " <<cpuTimer1.format() << "----"<< std::endl;
+    }
 
     double gain = std::get<0>(gain_question);
   Question question = std::get<1> (gain_question);

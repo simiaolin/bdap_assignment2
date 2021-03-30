@@ -81,6 +81,8 @@ namespace Calculations {
     void accumulate_to_numeric_classcounter(ClassCounterWithSize &toBeAccumulated, ClassCounterWithSize &accumalated);
 
     const ClassCounter get_overall_classcounter_numeric(const NumericClassCounterMap &numericClassCounterMap);
+
+    void generateSampleData(const Data &rows, const std::vector<size_t> &samples, Data &sampleData);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
