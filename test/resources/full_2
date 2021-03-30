@@ -1,3 +1,9 @@
+1. use reference
 Done.  649.842656s wall, 644.650000s user + 2.260000s system = 646.910000s CPU (99.5%)
 
 Total accuracy: 0.935273
+
+2. remove preorder
+Done.  476.645172s wall, 461.390000s user + 4.650000s system = 466.040000s CPU (97.8%)
+
+Total accuracy: 0.935102
