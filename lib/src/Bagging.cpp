@@ -27,6 +27,7 @@ void Bagging::buildBag() {
     timer.start();
       std::uniform_int_distribution<int> unii(0, dr_.trainData().size() - 1);
       std::vector<size_t> samples;
+      samples.reserve(dr_.trainData().size());
       for (int i = 0; i < dr_.trainData().size(); i++) {
           samples.emplace_back(std::move(unii(random_number_generator)));
       }

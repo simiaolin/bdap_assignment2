@@ -135,6 +135,7 @@ std::tuple<std::string, double> const
     double best_loss = std::numeric_limits<float>::infinity();
     std::string best_thresh;
     ClassCounterWithSize true_classcounter_with_size;
+    std::get<1>(true_classcounter_with_size).reserve(std::get<1>(overall).size());
     for (auto current = numericClassCounterMap.rbegin(); current != numericClassCounterMap.rend(); current++) {
         accumulate_to_numeric_classcounter(true_classcounter_with_size, current->second);
         const string feature_value = std::to_string(current->first);
@@ -206,6 +207,7 @@ Calculations::get_best_loss(const std::string &feature_value, const ClassCounter
 const ClassCounterWithSize Calculations::get_false_class_counter(
         const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum) {
     ClassCounter false_class_counter;
+    false_class_counter.reserve(std::get<1>(sum).size());
     const ClassCounter sum_counter =  std::get<1>(sum);
     const ClassCounter true_counter = std::get<1>(trueClassCounterWithSize);
     for (auto counter = sum_counter.begin(); counter != sum_counter.end(); counter++) {

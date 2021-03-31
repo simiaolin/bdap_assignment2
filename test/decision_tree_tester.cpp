@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
   DataReader dr(d);
   DecisionTree dt(dr);
-//  dt.print();
+  dt.print();
   dt.test();
   return 0;
 }
