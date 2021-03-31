@@ -8,7 +8,7 @@ scp  /Users/ary/CLionProjects/bdap_2/test/*.cpp  r0829520@balen.cs.kotnet.kuleuv
 #scp  /Users/ary/CLionProjects/bdap_2/test/CMakeLists.txt r0829520@balen.cs.kotnet.kuleuven.be:/home/r0829520/assign2/bdap_2/test
 scp  /Users/ary/CLionProjects/bdap_2/test/*.h r0829520@balen.cs.kotnet.kuleuven.be:/home/r0829520/assign2/bdap_2/test
 scp  /Users/ary/CLionProjects/bdap_2/test/*.sh r0829520@balen.cs.kotnet.kuleuven.be:/home/r0829520/assign2/bdap_2/test
-ssh r0829520@balen.cs.kotnet.kuleuven.be
+ssh r0829520@ham.cs.kotnet.kuleuven.be
 
 cd /home/r0829520/assign2/bdap_2 &&./install.sh
 #cd /home/r0829520/assign2/bdap_2/test/build &&./DecisionTreeTest full

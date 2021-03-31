@@ -5,6 +5,7 @@
  */
 
 #include "DecisionTree.hpp"
+#include <thread>
 
 using std::make_shared;
 using std::shared_ptr;
@@ -32,7 +33,7 @@ DecisionTree::DecisionTree(const DataReader& dr, const std::vector<size_t>& samp
 }
 
 const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
-    bool showSplittingMsg = true;
+    bool showSplittingMsg = false;
     cpu_timer cpuTimer1;
   tuple<const double, const Question, int, int> gain_question_and_splitted_size = Calculations::find_best_split(rows, meta);
     if (showSplittingMsg) {
@@ -56,10 +57,22 @@ const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
        false_data.reserve(false_data_size);
       Calculations::partition(rows, question, true_data, false_data);
 //      std::cout<<"split size " << rows.size() << " using " << cpuTimer.format() << std::endl;
-      // In case there is empty branch
-      Node trueBranch = buildTree(true_data, meta);
-      Node falseBranch = buildTree(false_data, meta);
-      return Node(trueBranch, falseBranch, question);
+      Node* true_branch = new Node;
+      Node* false_branch = new Node;
+      std::thread buildTrueTree([this, &true_data, &meta, true_branch]() {
+          *true_branch = buildTree(true_data, meta);
+      });
+      std::thread buildFalseTree([this, &false_data, &meta, false_branch]() {
+          *false_branch = buildTree(false_data, meta);
+      });
+
+      buildTrueTree.join();
+      buildFalseTree.join();
+
+      Node res = Node(*true_branch, *false_branch, question);
+      delete true_branch;
+      delete false_branch;
+      return res;
   }
 }
 

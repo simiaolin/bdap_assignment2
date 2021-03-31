@@ -1,0 +1,36 @@
+ham$ cd /home/r0829520/assign2/bdap_2/test/build &&./BaggingTest full
+Start reading data set.
+Done.  6.823255s wall, 8.310000s user + 0.100000s system = 8.410000s CPU (123.3%)
+
+Start building tree in bagging.
+generate example with size 463859 use  0.606720s wall, 0.560000s user + 0.050000s system = 0.610000s CPU (100.5%)
+
+Done with building tree in bagging.  80.162514s wall, 351.250000s user + 2.450000s system = 353.700000s CPU (441.2%)
+
+Total accuracy: 0.916724
+Start building tree in bagging.
+generate example with size 463859 use  0.573156s wall, 0.580000s user + 0.000000s system = 0.580000s CPU (101.2%)
+
+Done with building tree in bagging.  83.407075s wall, 353.680000s user + 1.920000s system = 355.600000s CPU (426.3%)
+
+Total accuracy: 0.915043
+Start building tree in bagging.
+generate example with size 463859 use  0.554134s wall, 0.550000s user + 0.000000s system = 0.550000s CPU (99.3%)
+
+Done with building tree in bagging.  81.565287s wall, 350.170000s user + 1.540000s system = 351.710000s CPU (431.2%)
+
+Total accuracy: 0.915649
+Start building tree in bagging.
+generate example with size 463859 use  0.553181s wall, 0.550000s user + 0.000000s system = 0.550000s CPU (99.4%)
+
+Done with building tree in bagging.  81.912920s wall, 351.090000s user + 1.580000s system = 352.670000s CPU (430.5%)
+
+Total accuracy: 0.917433
+Start building tree in bagging.
+generate example with size 463859 use  0.554531s wall, 0.550000s user + 0.000000s system = 0.550000s CPU (99.2%)
+
+Done with building tree in bagging.  80.455458s wall, 352.010000s user + 1.750000s system = 353.760000s CPU (439.7%)
+
+Total accuracy: 0.915145
+Average timing: 87.2
+Bagging Total accuracy: 0.953309
