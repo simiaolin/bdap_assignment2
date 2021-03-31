@@ -11,8 +11,10 @@ scp  /Users/ary/CLionProjects/bdap_2/test/*.sh r0829520@balen.cs.kotnet.kuleuven
 ssh r0829520@balen.cs.kotnet.kuleuven.be
 
 cd /home/r0829520/assign2/bdap_2 &&./install.sh
-cd /home/r0829520/assign2/bdap_2/test/build &&./DecisionTreeTest full
+#cd /home/r0829520/assign2/bdap_2/test/build &&./DecisionTreeTest full
 cd /home/r0829520/assign2/bdap_2/test/build &&./BaggingTest full
+
+cd /home/r0829520/assign2/bdap_2/test/build &&  valgrind --tool=memcheck --leak-check=full ./BaggingTest full
 
 
 ssh -L 8080:mysql.cs.kotnet.kuleuven.be:80 r0829520@st.cs.kuleuven.be
@@ -23,4 +25,7 @@ ssh r0829520@ohey.cs.kotnet.kuleuven.be
 ssh r0829520@knokke.cs.kotnet.kuleuven.be
 ssh r0829520@waterloo.cs.kotnet.kuleuven.be
 ssh r0829520@yvoir.cs.kotnet.kuleuven.be
+ssh r0829520@ham.cs.kotnet.kuleuven.be
+ssh r0829520@gent.cs.kotnet.kuleuven.be
 
+dmesg | grep "killed"

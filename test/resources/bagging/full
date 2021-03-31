@@ -1,0 +1,55 @@
+1. [on own laptop]
+Start reading data set.
+Done.  10.174198s wall, 12.780000s user + 0.100000s system = 12.880000s CPU (126.6%)
+
+Start building tree in bagging.
+Done with building tree in bagging.  367.017301s wall, 365.190000s user + 0.890000s system = 366.080000s CPU (99.7%)
+
+Total accuracy: 0.916921
+Start building tree in bagging.
+Done with building tree in bagging.  372.525817s wall, 370.770000s user + 0.960000s system = 371.730000s CPU (99.8%)
+
+Total accuracy: 0.916699
+Start building tree in bagging.
+Done with building tree in bagging.  370.061414s wall, 368.190000s user + 0.900000s system = 369.090000s CPU (99.7%)
+
+Total accuracy: 0.916716
+Start building tree in bagging.
+Done with building tree in bagging.  374.620861s wall, 372.720000s user + 0.930000s system = 373.650000s CPU (99.7%)
+
+Total accuracy: 0.916835
+Start building tree in bagging.
+Done with building tree in bagging.  373.139743s wall, 371.520000s user + 0.850000s system = 372.370000s CPU (99.8%)
+
+Total accuracy: 0.915478
+Average timing: 375.4
+Bagging Total accuracy: 0.953147
+
+2. [on machine ham]
+
+ham$ cd /home/r0829520/assign2/bdap_2/test/build &&./BaggingTest full
+Start reading data set.
+Done.  6.927212s wall, 8.400000s user + 0.130000s system = 8.530000s CPU (123.1%)
+
+Start building tree in bagging.
+Done with building tree in bagging.  329.205432s wall, 328.810000s user + 0.400000s system = 329.210000s CPU (100.0%)
+
+Total accuracy: 0.916733
+Start building tree in bagging.
+Done with building tree in bagging.  332.505911s wall, 332.290000s user + 0.200000s system = 332.490000s CPU (100.0%)
+
+Total accuracy: 0.915034
+Start building tree in bagging.
+Done with building tree in bagging.  329.472013s wall, 329.260000s user + 0.190000s system = 329.450000s CPU (100.0%)
+
+Total accuracy: 0.915649
+Start building tree in bagging.
+Done with building tree in bagging.  330.795723s wall, 330.620000s user + 0.150000s system = 330.770000s CPU (100.0%)
+
+Total accuracy: 0.917467
+Start building tree in bagging.
+Done with building tree in bagging.  330.999726s wall, 330.810000s user + 0.180000s system = 330.990000s CPU (100.0%)
+
+Total accuracy: 0.915145
+Average timing: 336.4
+Bagging Total accuracy: 0.953317

@@ -1,0 +1,28 @@
+/Users/ary/CLionProjects/bdap_2/cmake-build-debug/test/BaggingTest tennis
+Start reading data set.
+Done.  0.000457s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Start building tree in bagging.
+Done with building tree in bagging.  0.001877s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Total accuracy: 0.833333
+Start building tree in bagging.
+Done with building tree in bagging.  0.001319s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Total accuracy: 1
+Start building tree in bagging.
+Done with building tree in bagging.  0.001250s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Total accuracy: 0.833333
+Start building tree in bagging.
+Done with building tree in bagging.  0.000942s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Total accuracy: 0.833333
+Start building tree in bagging.
+Done with building tree in bagging.  0.000447s wall, 0.010000s user + 0.000000s system = 0.010000s CPU (n/a%)
+
+Total accuracy: 0.5
+Average timing: 0
+Bagging Total accuracy: 0.833333
+
+Process finished with exit code 0

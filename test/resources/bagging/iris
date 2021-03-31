@@ -1,0 +1,28 @@
+/Users/ary/CLionProjects/bdap_2/cmake-build-debug/test/BaggingTest iris
+Start reading data set.
+Done.  0.002337s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Start building tree in bagging.
+Done with building tree in bagging.  0.009562s wall, 0.010000s user + 0.000000s system = 0.010000s CPU (104.6%)
+
+Total accuracy: 1
+Start building tree in bagging.
+Done with building tree in bagging.  0.006994s wall, 0.010000s user + 0.000000s system = 0.010000s CPU (143.0%)
+
+Total accuracy: 1
+Start building tree in bagging.
+Done with building tree in bagging.  0.009187s wall, 0.010000s user + 0.000000s system = 0.010000s CPU (108.9%)
+
+Total accuracy: 1
+Start building tree in bagging.
+Done with building tree in bagging.  0.009454s wall, 0.010000s user + 0.000000s system = 0.010000s CPU (105.8%)
+
+Total accuracy: 1
+Start building tree in bagging.
+Done with building tree in bagging.  0.008089s wall, 0.000000s user + 0.000000s system = 0.000000s CPU (n/a%)
+
+Total accuracy: 1
+Average timing: 0
+Bagging Total accuracy: 1
+
+Process finished with exit code 0
