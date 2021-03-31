@@ -37,7 +37,7 @@ namespace Calculations {
 
     const double gini(const ClassCounter &counts, const double N);
 
-    std::tuple<const double, const Question> find_best_split(const Data &rows, const MetaData &meta);
+    std::tuple<const double, const Question, int, int> find_best_split(const Data &rows, const MetaData &meta);
 
     std::tuple<std::string, double>
     determine_best_threshold_numeric(const Data &data, int col);
@@ -50,7 +50,7 @@ namespace Calculations {
     std::tuple<std::string, double>
     const get_best_threshold_from_numeric_class_counter_vec(const NumericClassCounterVec &classCounterWithSizeVec);
 
-    std::tuple<std::string, double> const
+    const std::tuple<std::string, double, int, int>
     get_best_threshold_from_numeric_class_counter_map(NumericClassCounterMap &numericClassCounterMap,
                                                       const ClassCounterWithSize &overall);
 
@@ -63,16 +63,18 @@ namespace Calculations {
 
     const ClassCounterWithSize
     get_false_class_counter(const ClassCounterWithSize &trueClassCounterWithSize, const ClassCounterWithSize &sum);
-    std::tuple<std::string, double> determine_best_threshold_numeric_new(const Data &data, int col);
+    std::tuple<std::string, double, int, int> determine_best_threshold_numeric_new(const Data &data, int col);
 
-    std::tuple<std::string, double> determine_best_threshold_cat(const Data &data, int col);
+    std::tuple<std::string, double, int, int> determine_best_threshold_cat(const Data &data, int col);
 
     bool get_best_loss(const std::string &feature_value, const ClassCounterWithSize &true_class_counter_with_size,
-                       const ClassCounterWithSize &sum, double &best_loss, std::string &best_thresh);
+                       const ClassCounterWithSize &sum, double &best_loss, std::string &best_thresh,
+                       int &best_true_size,
+                       int &best_false_size);
 
-    const std::tuple<std::string, double>
-    get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap,
-                                                        const ClassCounterWithSize &sum);
+    std::tuple<std::string, double, int, int>
+    const
+    get_best_threshold_from_category_class_counter_vecs(const CategoryClassCounterMap &categoryClassCounterMap, const ClassCounterWithSize &sum);
 
     bool sorter(VecS &row1, VecS &row2);
 

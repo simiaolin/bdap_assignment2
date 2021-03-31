@@ -33,7 +33,7 @@ void Bagging::buildBag() {
       }
       DecisionTree dt(dr_, samples);
      dt.test();
-    //TODO: Implement bagging
+    // Implement bagging
     //   Generate a bootstrap sample of the original data
     //   Train an unpruned tree model on this sample
     auto nanoseconds = boost::chrono::nanoseconds(timer.elapsed().wall);

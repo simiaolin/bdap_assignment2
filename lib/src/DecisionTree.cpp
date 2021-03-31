@@ -23,7 +23,10 @@ DecisionTree::DecisionTree(const DataReader& dr, const std::vector<size_t>& samp
     std::cout << "Start building tree in bagging." << std::endl; cpu_timer timer;
 
     Data sample_data;
+    sample_data.reserve(samples.size());
+    cpu_timer cpuTimer;
     Calculations::generateSampleData(dr_.trainData(), samples, sample_data);
+    std::cout<<"generate example with size " << samples.size() << " use " << cpuTimer.format() <<std::endl;
     root_ = buildTree(sample_data, dr_.metaData());
     std::cout << "Done with building tree in bagging. " << timer.format() << std::endl;
 }
@@ -31,13 +34,13 @@ DecisionTree::DecisionTree(const DataReader& dr, const std::vector<size_t>& samp
 const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
     bool showSplittingMsg = true;
     cpu_timer cpuTimer1;
-  tuple<const double, const Question> gain_question = Calculations::find_best_split(rows, meta);
+  tuple<const double, const Question, int, int> gain_question_and_splitted_size = Calculations::find_best_split(rows, meta);
     if (showSplittingMsg) {
         std::cout<<"----find best split with size " <<rows.size() << " use " <<cpuTimer1.format() << "----"<< std::endl;
     }
 
-    double gain = std::get<0>(gain_question);
-  Question question = std::get<1> (gain_question);
+    double gain = std::get<0>(gain_question_and_splitted_size);
+  Question question = std::get<1> (gain_question_and_splitted_size);
   if (IsAlmostEqual(gain, 0.0)) {
       ClassCounter classCounter = Calculations::classCounts(rows);
       Leaf leaf(classCounter);
@@ -47,7 +50,11 @@ const Node DecisionTree::buildTree(const Data &rows, const MetaData& meta) {
 //      cpu_timer cpuTimer;
        Data true_data;
        Data false_data;
-      Calculations::partition(rows, question, true_data,false_data);
+       int true_data_size = std::get<2>(gain_question_and_splitted_size);
+       int false_data_size = std::get<3>(gain_question_and_splitted_size);
+       true_data.reserve(true_data_size);
+       false_data.reserve(false_data_size);
+      Calculations::partition(rows, question, true_data, false_data);
 //      std::cout<<"split size " << rows.size() << " using " << cpuTimer.format() << std::endl;
       // In case there is empty branch
       Node trueBranch = buildTree(true_data, meta);
