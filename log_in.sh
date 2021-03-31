@@ -8,11 +8,11 @@ scp  /Users/ary/CLionProjects/bdap_2/test/*.cpp  r0829520@balen.cs.kotnet.kuleuv
 #scp  /Users/ary/CLionProjects/bdap_2/test/CMakeLists.txt r0829520@balen.cs.kotnet.kuleuven.be:/home/r0829520/assign2/bdap_2/test
 scp  /Users/ary/CLionProjects/bdap_2/test/*.h r0829520@balen.cs.kotnet.kuleuven.be:/home/r0829520/assign2/bdap_2/test
 scp  /Users/ary/CLionProjects/bdap_2/test/*.sh r0829520@balen.cs.kotnet.kuleuven.be:/home/r0829520/assign2/bdap_2/test
-ssh r0829520@ham.cs.kotnet.kuleuven.be
+ssh r0829520@gent.cs.kotnet.kuleuven.be
 
 cd /home/r0829520/assign2/bdap_2 &&./install.sh
 #cd /home/r0829520/assign2/bdap_2/test/build &&./DecisionTreeTest full
-cd /home/r0829520/assign2/bdap_2/test/build &&./BaggingTest full
+cd /home/r0829520/assign2/bdap_2/test/build &&./BaggingTest full 6
 
 cd /home/r0829520/assign2/bdap_2/test/build &&  valgrind --tool=memcheck --leak-check=full ./BaggingTest full
 cd /home/r0829520/assign2/bdap_2/test/build &&  valgrind --tool=memcheck --leak-check=yes ./BaggingTest full
@@ -33,11 +33,16 @@ ssh r0829520@brugge.cs.kotnet.kuleuven.be
 
 dmesg | grep "killed"
 
-1. keep split size
 2. use map to avoid multi read
 3. parallel
 4. report
 
+ssh r0829520@lommel.cs.kotnet.kuleuven.be
+ssh r0829520@fleurus.cs.kotnet.kuleuven.be
+ssh r0829520@komen.cs.kotnet.kuleuven.be
+ssh r0829520@asse.cs.kotnet.kuleuven.be
+ssh r0829520@musson.cs.kotnet.kuleuven.be
+ssh r0829520@alken.cs.kotnet.kuleuven.be
 
 #kill heers balen (1) gent waterloo（0）knokke (1) yvoir(1) ans(1)
 

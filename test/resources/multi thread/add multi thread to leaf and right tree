@@ -34,3 +34,9 @@ Done with building tree in bagging.  80.455458s wall, 352.010000s user + 1.75000
 Total accuracy: 0.915145
 Average timing: 87.2
 Bagging Total accuracy: 0.953309
+
+
+brugee
+Average timing: 98
+Bagging Total accuracy: 0.953309
+

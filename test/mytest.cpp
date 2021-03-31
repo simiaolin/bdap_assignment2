@@ -7,6 +7,7 @@
 #include <vector>
 #include <random>
 #include <ctime> // To seed the generator.
+#include <thread>
 
 using std::vector;
 using std::cout;
@@ -71,9 +72,9 @@ int testConst(const int) {
 
 
 int main() {
-    int i =1;
-    testConst(i);
-    return 0;
+        int i = std::thread::hardware_concurrency();    //获取当前CPU核心数量
+        std::cout<<"there are core " <<i <<std::endl;
+
 }
 
 void testRnadom() {

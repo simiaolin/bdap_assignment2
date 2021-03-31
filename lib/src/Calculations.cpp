@@ -420,3 +420,67 @@ std::tuple<std::string, double> const Calculations::get_best_threshold_from_nume
     const double overall_gini = gini(std::get<1>(overall_class_counter_with_size), std::get<0>(overall_class_counter_with_size));
     return forward_as_tuple(best_thresh,  overall_gini -  best_loss);
 }
+
+//tuple<const double, const Question, int, int> Calculations::find_best_split(const Data &rows, const MetaData &meta) {
+//    double best_gain = 0.0;  // keep track of the best information gain
+//    std::string best_question_value;
+//    int best_column;
+//    double current_gain;
+//    int best_true_size;
+//    int best_false_size;
+//
+////    int i = std::thread::hardware_concurrency();    //获取当前CPU核心数量
+//    vector<tuple<int, tuple<std::string, double, int, int>>>* thres_and_loss_and_splitted_size_vec =
+//            new vector<tuple<int, tuple<std::string, double, int, int>>>(meta.labels.size() - 1);
+//    int thread_num = 2;
+//    std::vector<std::tuple<int, int>> colIndicesEachThreadVec = getColumnCntEachThread(thread_num, meta.labels.size() - 1);
+//    for (auto colIndice : colIndicesEachThreadVec) {
+//        std::thread t([&rows, &meta, thres_and_loss_and_splitted_size_vec, &colIndice] () {
+//            for (int col = std::get<0>(colIndice); col < std::get<1>(colIndice); col++) {
+//                tuple<std::string, double, int, int> thres_and_loss_and_splitted_size =
+//                        (meta.labelTypes.at(col) > 0) ?
+//                        determine_best_threshold_numeric_new(rows, col) :
+//                        determine_best_threshold_cat(rows, col);
+//                thres_and_loss_and_splitted_size_vec->push_back(forward_as_tuple(col, thres_and_loss_and_splitted_size));
+//
+//            }
+//        });
+//        t.join();
+//    }
+//
+//    for (auto current_best : *thres_and_loss_and_splitted_size_vec) {
+//        int col = std::get<0>(current_best);
+//        tuple<std::string, double, int, int> thres_and_loss_and_splitted_size = std::get<1>(current_best);
+//        current_gain = std::get<1>(thres_and_loss_and_splitted_size);
+//        if (current_gain > best_gain) {
+//            best_question_value = std::get<0>(thres_and_loss_and_splitted_size);
+//            best_column = col;
+//            best_gain = current_gain;
+//            best_true_size = std::get<2>(thres_and_loss_and_splitted_size);
+//            best_false_size = std::get<3>(thres_and_loss_and_splitted_size);
+//        }
+//    }
+//    delete thres_and_loss_and_splitted_size_vec;
+//    Question best_question(best_column, best_question_value);
+//    return forward_as_tuple(best_gain, best_question, best_true_size, best_false_size);
+//}
+
+//std::vector<std::tuple<int, int>> Calculations::getColumnCntEachThread(int threadNum, int columnNum) {
+//    int min_avg_each_thread = columnNum / threadNum;
+//    int left_over_col_cnt = columnNum - min_avg_each_thread * threadNum;
+//    std::vector<std::tuple<int, int>> res;
+//    res.reserve(threadNum);
+//    int begin_index = 0;
+//    int end_index = 0;
+//    for (int i = 0 ; i < threadNum; i++) {
+//        if (left_over_col_cnt > 0) {
+//            end_index = begin_index + min_avg_each_thread + 1;
+//            left_over_col_cnt--;
+//        } else {
+//            end_index = begin_index + min_avg_each_thread;
+//        }
+//        res.emplace_back(forward_as_tuple(begin_index, end_index));
+//        begin_index = end_index;
+//    }
+//    return res;
+//}
