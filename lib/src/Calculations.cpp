@@ -543,3 +543,78 @@ std::tuple<std::string, double> const Calculations::get_best_threshold_from_nume
 //    }
 //    return res;
 //}
+
+/**
+ * Given data, to find the best split.
+ * @param rows the data
+ * @param meta the feature information
+ * @return a tuple of best gain and best question
+ */
+//tuple<const double, const Question, int, int> Calculations::find_best_split(const Data &rows, const MetaData &meta) {
+//    std::string best_question_value;
+//    int col_size = meta.labels.size() - 1;
+//
+//
+//    AllCatMap*  allCatMap1 = new AllCatMap;
+//    AllNumericMap*  allNumericMap1 = new AllNumericMap;
+//    AllCatMap*  allCatMap2 = new AllCatMap ;
+//    AllNumericMap*  allNumericMap2 = new AllNumericMap ;
+//    int mid = rows.size() / 2;
+//    int size = rows.size();
+//    std::thread t1([&rows, &meta, &mid, &col_size, allCatMap1, allNumericMap1] ( ) {
+//        get_maps(0, mid, col_size, meta, rows, *allCatMap1, *allNumericMap1);
+//    });
+//
+//    std::thread t2([&rows, &meta, &mid, &size,&col_size, allCatMap2, allNumericMap2] ( ) {
+//        get_maps(mid, size, col_size, meta, rows, *allCatMap2, *allNumericMap2);
+//    });
+//
+//    t1.join();
+//    t2.join();
+//
+//    merge_all_catmap(*allCatMap1, *allCatMap2);
+//    merge_all_numericmap(*allNumericMap1, *allNumericMap2);
+//
+//    std::tuple<const double, const Question, int, int> res = get_best_split_from_all_map(*allCatMap1, *allNumericMap1, rows.size());
+//    delete allNumericMap1;
+//    delete allCatMap1;
+//    delete allNumericMap2;
+//    delete allCatMap2;
+//    return res;
+//}
+//
+//void
+//Calculations::get_maps(int begin, int end, int col_size, const MetaData &meta, const Data &rows,
+//                       AllCatMap &allCatMap,
+//                       AllNumericMap &allNumericMap) {
+//    for (int row_index = begin; row_index < end; row_index++) {
+//        for (int col = 0; col < col_size; col++) {
+//            if (meta.labelTypes.at(col) == 0) {
+//                add_to_all_catmap(allCatMap, col, rows.at(row_index));
+//            } else {
+//                add_to_all_numericmap(allNumericMap, col, rows.at(row_index));
+//            }
+//        }
+//    }
+//}
+//
+//void Calculations::merge_all_catmap(AllCatMap &toBeAccumulatedAllCatMap, AllCatMap &accumulatedAllCatMap) {
+//    for (auto col_with_catmap : accumulatedAllCatMap) {
+//        for (auto feature_with_class_counter : col_with_catmap.second) {
+//            accumulate_to_numeric_classcounter(
+//                    toBeAccumulatedAllCatMap[col_with_catmap.first][feature_with_class_counter.first],
+//                    accumulatedAllCatMap[col_with_catmap.first][feature_with_class_counter.first]);
+//        }
+//    }
+//}
+//
+//void
+//Calculations::merge_all_numericmap(AllNumericMap &toBeAccumulatedNumericMap, AllNumericMap &accumulatedAllNumericMap) {
+//    for (auto col_with_catmap : accumulatedAllNumericMap) {
+//        for (auto feature_with_class_counter : col_with_catmap.second) {
+//            accumulate_to_numeric_classcounter(
+//                    toBeAccumulatedNumericMap[col_with_catmap.first][feature_with_class_counter.first],
+//                    accumulatedAllNumericMap[col_with_catmap.first][feature_with_class_counter.first]);
+//        }
+//    }
+//}

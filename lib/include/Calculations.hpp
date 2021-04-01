@@ -100,6 +100,16 @@ namespace Calculations {
     void update_best(std::tuple<std::string, double, int, int> &thres_and_loss_and_splitted_size, int col,
                      std::string &best_question_value, int &best_column, double &best_gain, int &best_true_size,
                      int &best_false_size);
+
+//    void merge_all_catmap(AllCatMap &toBeAccumulatedAllCatMap, AllCatMap &accumulatedAllCatMap);
+//
+//    void
+//    merge_all_numericmap(AllNumericMap &toBeAccumulatedNumericMap, AllNumericMap &accumulatedAllNumericMap);
+//
+//
+//    void
+//    get_maps(int begin, int end, int col_size, const MetaData &meta, const Data &rows, AllCatMap &allCatMap,
+//             AllNumericMap &allNumericMap);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
