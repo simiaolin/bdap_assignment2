@@ -11,7 +11,7 @@ scp  /Users/ary/CLionProjects/bdap_2/test/*.sh r0829520@balen.cs.kotnet.kuleuven
 ssh r0829520@gent.cs.kotnet.kuleuven.be
 
 cd /home/r0829520/assign2/bdap_2 &&./install.sh
-#cd /home/r0829520/assign2/bdap_2/test/build &&./DecisionTreeTest full
+cd /home/r0829520/assign2/bdap_2/test/build &&./DecisionTreeTest full
 cd /home/r0829520/assign2/bdap_2/test/build &&./BaggingTest full 6
 
 cd /home/r0829520/assign2/bdap_2/test/build &&  valgrind --tool=memcheck --leak-check=full ./BaggingTest full

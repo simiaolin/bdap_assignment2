@@ -24,6 +24,8 @@ void Bagging::buildBag() {
   cpu_timer timer;
   std::vector<double> timings; 
   for (int i = 0; i < ensembleSize_; i++) {
+      // Implement bagging
+      //   Generate a bootstrap sample of the original data//   Train an unpruned tree model on this sample
     timer.start();
       std::uniform_int_distribution<int> unii(0, dr_.trainData().size() - 1);
       std::vector<size_t> samples;
@@ -33,9 +35,7 @@ void Bagging::buildBag() {
       }
       DecisionTree dt(dr_, samples);
      dt.test();
-    // Implement bagging
-    //   Generate a bootstrap sample of the original data
-    //   Train an unpruned tree model on this sample
+
     auto nanoseconds = boost::chrono::nanoseconds(timer.elapsed().wall);
     auto seconds = boost::chrono::duration_cast<boost::chrono::seconds>(nanoseconds);
     timings.push_back(seconds.count());

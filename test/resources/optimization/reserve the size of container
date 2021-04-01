@@ -1,0 +1,36 @@
+Start reading data set.
+Done.  10.921262s wall, 13.750000s user + 0.130000s system = 13.880000s CPU (127.1%)
+
+Start building tree.
+------------numeric data with size 463859 use  0.900384s wall, 0.900000s user + 0.000000s system = 0.900000s CPU (100.0%)
+ end-------------
+
+------------numeric data with size 463859 use  0.825001s wall, 0.830000s user + 0.000000s system = 0.830000s CPU (100.6%)
+ end-------------
+
+------------numeric data with size 463859 use  0.712483s wall, 0.710000s user + 0.000000s system = 0.710000s CPU (99.7%)
+ end-------------
+
+------------numeric data with size 463859 use  0.815461s wall, 0.810000s user + 0.000000s system = 0.810000s CPU (99.3%)
+ end-------------
+
+------------numeric data with size 463859 use  0.816582s wall, 0.820000s user + 0.000000s system = 0.820000s CPU (100.4%)
+ end-------------
+
+------------numeric data with size 463859 use  1.058256s wall, 1.060000s user + 0.000000s system = 1.060000s CPU (100.2%)
+ end-------------
+
+------------numeric data with size 463859 use  0.785527s wall, 0.790000s user + 0.010000s system = 0.800000s CPU (101.8%)
+ end-------------
+
+------------numeric data with size 463859 use  0.763055s wall, 0.760000s user + 0.000000s system = 0.760000s CPU (99.6%)
+ end-------------
+
+------------numeric data with size 463859 use  0.784369s wall, 0.780000s user + 0.000000s system = 0.780000s CPU (99.4%)
+ end-------------
+
+------------numeric data with size 463859 use  1.084624s wall, 1.080000s user + 0.000000s system = 1.080000s CPU (99.6%)
+ end-------------
+
+----find best split with size 463859 use  10.095923s wall, 10.070000s user + 0.010000s system = 10.080000s CPU (99.8%)
+----

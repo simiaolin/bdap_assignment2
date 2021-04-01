@@ -28,6 +28,10 @@ using CategoryClassCounterMap = std::unordered_map<std::string, ClassCounterWith
 
 using NumericClassCounterMap = std::map<int, ClassCounterWithSize>;  // map <feature_value, class_counter_with_size>
 
+using AllCatMap = std::unordered_map<int, CategoryClassCounterMap>; //<col index, cat_class_counter_map>
+
+using AllNumericMap = std::unordered_map<int, NumericClassCounterMap>; //<col index, numeric_class_counter_map>
+
 using ClassCounterWithFeatureValue = std::tuple<std::string, ClassCounterWithSize>;
 using NumericClassCounterVec = std::vector<ClassCounterWithFeatureValue>;     //vector <feature_value, class_counter_with_size>
 
@@ -85,6 +89,17 @@ namespace Calculations {
     const ClassCounter get_overall_classcounter_numeric(const NumericClassCounterMap &numericClassCounterMap);
 
     void generateSampleData(const Data &rows, const std::vector<size_t> &samples, Data &sampleData);
+
+    void add_to_all_catmap(AllCatMap &allCatMap, int &col, std::vector<std::string> &row);
+
+    void add_to_all_numericmap(AllNumericMap &allNumericMap, int &col, std::vector<std::string> &row);
+
+    std::tuple<const double, const Question, int, int>
+    get_best_split_from_all_map(AllCatMap &allCatMap, AllNumericMap &allNumericMap, const int &allDataSize);
+
+    void update_best(std::tuple<std::string, double, int, int> &thres_and_loss_and_splitted_size, int col,
+                     std::string &best_question_value, int &best_column, double &best_gain, int &best_true_size,
+                     int &best_false_size);
 } // namespace Calculations
 
 #endif //DECISIONTREE_CALCULATIONS_HPP
